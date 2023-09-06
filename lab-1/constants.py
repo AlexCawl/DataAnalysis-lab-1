@@ -1,0 +1,6 @@
+IP_ADDRESS: str = "IP_ADDRESS"
+DATETIME: str = "DATETIME"
+HTTP_CODE: str = "HTTP_CODE"
+URL: str = "URL"
+HTTP_TYPE: str = "HTTP_VERSION"
+ID: str = "ID"

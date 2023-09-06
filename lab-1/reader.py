@@ -1,23 +1,18 @@
-from typing import List, TextIO
-from logparser import parser
-from loginfo import LogInfo
-def load_data(path: str) -> List[str]:
-    file: TextIO = open(file=path, mode="r")
-    content: List[str] = file.readlines()
-    # TODO to LIST[DTO]
-    return content
+from typing import TextIO
+from LogDTO import LogDTO
+from parser import parse
 
-loginfoDatabase = []
-for log in load_data("../access.log"):
-    try:
-        parse = parser(log)
-    except:
-        continue
-    loginfoDatabase.append(LogInfo(
-        parse["ip"],
-        parse["date"],
-        parse["request"],
-        parse["code"],
-        parse["response"],
-        parse["id"]
-    ))
+
+def load_logs_from_file(path: str) -> tuple[list[LogDTO], int]:
+    file: TextIO = open(file=path, mode="r")
+    content: list[str] = file.readlines()
+    logs: list[LogDTO] = []
+    fail_count: int = 0
+
+    for line in content:
+        try:
+            log: LogDTO = parse(line)
+            logs.append(log)
+        except Exception:
+            fail_count += 1
+    return logs, fail_count
