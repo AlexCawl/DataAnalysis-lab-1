@@ -1,8 +1,8 @@
 import re
 from typing import Dict
 
-from LogDTO import LogDTO
-from constants import *
+from .LogDTO import LogDTO
+from .constants import *
 
 
 # Example:

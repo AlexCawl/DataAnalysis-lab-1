@@ -1,10 +1,10 @@
 from typing import Any
-
-import pandas as pd
 from typing import List
 
-from LogDTO import LogDTO
-from constants import *
+import pandas as pd
+
+from .LogDTO import LogDTO
+from .constants import *
 
 
 def map_logs_to_dataframe(logs: List[LogDTO], size: int = 100) -> pd.DataFrame:
