@@ -1,7 +1,25 @@
+from typing import Any
+
 import pandas as pd
 import LogDTO
 from constants import *
 
 
 def map_logs_to_dataframe(logs: list[LogDTO]) -> pd.DataFrame:
-    return pd.DataFrame(columns=[ID, IP_ADDRESS, ])
+    dataframe: pd.DataFrame = pd.DataFrame(columns=[ID, IP_ADDRESS, DATETIME, HTTP_TYPE, HTTP_CODE, URL])
+    for index, log in enumerate(logs):
+        print(index)
+        dataframe.loc[index] = map_log_dto_to_values(log)
+        if index == 5000: break
+    return dataframe
+
+
+def map_log_dto_to_values(log: LogDTO) -> list[Any]:
+    return [
+        log.user_id,
+        log.ip,
+        log.date_time,
+        log.http_type,
+        log.code,
+        log.url
+    ]
