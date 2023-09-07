@@ -1,6 +1,7 @@
 from typing import TextIO, Tuple, List
-from LogDTO import LogDTO
-from parser import parse
+
+from .LogDTO import LogDTO
+from .processor import parse
 
 
 def load_logs_from_file(path: str) -> Tuple[List[LogDTO], int]:
