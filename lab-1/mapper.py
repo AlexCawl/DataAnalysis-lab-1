@@ -3,7 +3,7 @@ from typing import Any
 import pandas as pd
 from typing import List
 
-import LogDTO
+from LogDTO import LogDTO
 from constants import *
 
 
