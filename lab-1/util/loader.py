@@ -1,12 +1,13 @@
-from typing import TextIO
-from LogDTO import LogDTO
-from parser import parse
+from typing import TextIO, Tuple, List
+
+from .LogDTO import LogDTO
+from .processor import parse
 
 
-def load_logs_from_file(path: str) -> tuple[list[LogDTO], int]:
+def load_logs_from_file(path: str) -> Tuple[List[LogDTO], int]:
     file: TextIO = open(file=path, mode="r")
-    content: list[str] = file.readlines()
-    logs: list[LogDTO] = []
+    content: List[str] = file.readlines()
+    logs: List[LogDTO] = []
     fail_count: int = 0
 
     for line in content:
