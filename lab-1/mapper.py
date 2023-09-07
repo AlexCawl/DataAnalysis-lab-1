@@ -1,11 +1,13 @@
 from typing import Any
 
 import pandas as pd
+from typing import List
+
 import LogDTO
 from constants import *
 
 
-def map_logs_to_dataframe(logs: list[LogDTO]) -> pd.DataFrame:
+def map_logs_to_dataframe(logs: List[LogDTO]) -> pd.DataFrame:
     dataframe: pd.DataFrame = pd.DataFrame(columns=[ID, IP_ADDRESS, DATETIME, HTTP_TYPE, HTTP_CODE, URL])
     for index, log in enumerate(logs):
         print(index)
@@ -14,7 +16,7 @@ def map_logs_to_dataframe(logs: list[LogDTO]) -> pd.DataFrame:
     return dataframe
 
 
-def map_log_dto_to_values(log: LogDTO) -> list[Any]:
+def map_log_dto_to_values(log: LogDTO) -> List[Any]:
     return [
         log.user_id,
         log.ip,
