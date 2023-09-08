@@ -15,9 +15,9 @@ def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe:
     checked_users: dict = dict()
 
     def user_addbasket_count(_dataframe: pd.DataFrame, _index: int, _user_id: str) -> Tuple[int, int]:
-        state = 0
-        _catalog_counter = 0
-        _search_counter = 0
+        state: int = 0
+        _catalog_counter: int = 0
+        _search_counter: int = 0
         for i in range(_index, len(_dataframe)):
             _row: pd.Series = _dataframe.loc[i]
             if str(_row["ID"]) == _user_id:
@@ -45,6 +45,5 @@ def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe:
             catalogue_count += 1 if res[0] > 1 else 0
             search_count += 1 if res[1] > 1 else 0
             checked_users.update({_id: 1})
-        print(index, catalogue_count, search_count)
     return h0 if catalogue_count > search_count else h1, f"{catalogue_count + search_count} | " \
                                                          f"{catalogue_count} - {search_count}"
