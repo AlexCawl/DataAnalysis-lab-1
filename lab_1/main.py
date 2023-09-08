@@ -25,10 +25,11 @@ def check_hypothesises(dataframe: pd.DataFrame):
     """
     r2: Tuple[str, str] = check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe)
     print(f"{h2}\n{r2[0]}\n{r2[1]}\n\n")
+    # TODO other hypothesis checking add
 
 
 if __name__ == '__main__':
     data: Tuple[List[LogDTO], int] = load_logs_from_file("../data/access.log")
-    df: pd.DataFrame = map_logs_to_dataframe(data[0], 1000)
+    df: pd.DataFrame = map_logs_to_dataframe(data[0], 10000)
     debug(df)
     check_hypothesises(df)
