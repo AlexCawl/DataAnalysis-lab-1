@@ -2,11 +2,14 @@ from typing import Tuple
 
 import pandas as pd
 
+from lab_1.util.decorators import measure_execution_time
+
 
 # Гипотеза №1
-# При использовании КАТАЛОГА** пользователь добавляет предмет в корзину чаще, чем после **ПОИСКА**
+# При использовании КАТАЛОГА пользователь добавляет предмет в корзину чаще, чем после ПОИСКА
 
-def check_if_items_added_more_from_catalogue_than_after_search(dataframe: pd.DataFrame) -> Tuple[str, str]:
+@measure_execution_time
+def check_items_added_from_catalogue_rather_search(dataframe: pd.DataFrame, strict: bool = False) -> Tuple[str, str]:
     h0: str = "h0: При использовании КАТАЛОГА пользователь добавляет предмет в корзину чаще, чем после ПОИСКА"
     h1: str = "h1: При использовании ПОИСКА пользователь добавляет предмет в корзину чаще, чем после КАТАЛОГА"
 
@@ -35,6 +38,12 @@ def check_if_items_added_more_from_catalogue_than_after_search(dataframe: pd.Dat
             elif added_from == 1:
                 search_count += 1
             else:
-                raise Exception
+                if strict:
+                    raise Exception
+                else:
+                    print("----------------------------------------")
+                    print(row.to_string())
+                    print("Previous page is not found!")
+                    print("----------------------------------------", end="\n\n")
 
     return h0 if catalogue_count > search_count else h1, f"{items_chosen_count} | {catalogue_count} - {search_count}"
