@@ -3,9 +3,8 @@ from typing import Tuple
 import pandas as pd
 
 
-def check_something(dataframe: pd.DataFrame) -> int:
-    return dataframe.size.real
-
+# Гипотеза №1
+# При использовании КАТАЛОГА** пользователь добавляет предмет в корзину чаще, чем после **ПОИСКА**
 
 def check_if_items_added_more_from_catalogue_than_after_search(dataframe: pd.DataFrame) -> Tuple[str, str]:
     h0: str = "h0: При использовании КАТАЛОГА пользователь добавляет предмет в корзину чаще, чем после ПОИСКА"
