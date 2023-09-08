@@ -1,5 +1,5 @@
 from typing import Tuple
-
+from lab_1.util.constants import *
 import pandas as pd
 
 
@@ -21,12 +21,12 @@ def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe:
         for i in range(_index, len(_dataframe)):
             _row: pd.Series = _dataframe.loc[i]
             if str(_row["ID"]) == _user_id:
-                url: str = str(_row["URL"])
-                if url.startswith("/catalog"):
+                url: str = str(_row[URL])
+                if url.startswith(CATALOG):
                     state = 1
-                elif url.startswith("/search"):
+                elif url.startswith(SEARCH):
                     state = 2
-                elif url.startswith("/addbasket"):
+                elif url.startswith(ADDBASKET):
                     if state == 1:
                         _catalog_counter += 1
                     elif state == 2:
@@ -39,9 +39,9 @@ def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe:
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        _id = str(row["ID"])
+        _id = str(row[ID])
         if checked_users.get(_id) is None:
-            res: Tuple[int, int] = user_addbasket_count(dataframe, index, str(row["ID"]))
+            res: Tuple[int, int] = user_addbasket_count(dataframe, index, str(row[ID]))
             catalogue_count += 1 if res[0] > 1 else 0
             search_count += 1 if res[1] > 1 else 0
             checked_users.update({_id: 1})
