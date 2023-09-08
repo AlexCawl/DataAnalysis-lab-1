@@ -1,20 +1,23 @@
-from typing import Tuple
+from typing import Tuple, Dict
 
 import pandas as pd
+
+from lab_1.util.decorators import measure_execution_time
 
 
 # Гипотеза №2
 # При добавлении предмета с использованием КАТАЛОГА пользователь добавляет следующий предмет в
 # корзину чаще, чем при использовании ПОИСКА
 
+@measure_execution_time
 def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe: pd.DataFrame) -> Tuple[str, str]:
     h0: str = "h0: При добавлении предмета с использованием КАТАЛОГА пользователь добавляет следующий предмет в корзину" \
               " чаще, чем при использовании ПОИСКА"
     h1: str = "h0: При добавлении предмета с использованием ПОИСКА пользователь добавляет следующий предмет в корзину" \
               "чаще, чем при использовании КАТАЛОГА"
-    checked_users: dict = dict()
+    checked_users: Dict[str, int] = dict()
 
-    def user_addbasket_count(_dataframe: pd.DataFrame, _index: int, _user_id: str) -> Tuple[int, int]:
+    def user_add_basket_count(_dataframe: pd.DataFrame, _index: int, _user_id: str) -> Tuple[int, int]:
         state: int = 0
         _catalog_counter: int = 0
         _search_counter: int = 0
@@ -39,9 +42,9 @@ def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe:
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        _id = str(row["ID"])
+        _id: str = str(row["ID"])
         if checked_users.get(_id) is None:
-            res: Tuple[int, int] = user_addbasket_count(dataframe, index, str(row["ID"]))
+            res: Tuple[int, int] = user_add_basket_count(dataframe, index, str(row["ID"]))
             catalogue_count += 1 if res[0] > 1 else 0
             search_count += 1 if res[1] > 1 else 0
             checked_users.update({_id: 1})
