@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Dict
 from lab_1.util.constants import *
 import pandas as pd
 
@@ -6,19 +6,19 @@ from lab_1.util.decorators import measure_execution_time
 
 
 # Гипотеза №2
-# При добавлении предмета с использованием КАТАЛОГА пользователь добавляет следующий предмет в
+# При добавлении предметов с использованием КАТАЛОГА пользователь добавляет следующий предмет в
 # корзину чаще, чем при использовании ПОИСКА
 
 @measure_execution_time
 def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe: pd.DataFrame) -> Tuple[str, str]:
-    h0: str = "h0: При добавлении предмета с использованием КАТАЛОГА пользователь добавляет следующий предмет" \
+    h0: str = "h0: При добавлении предметов с использованием КАТАЛОГА пользователь добавляет следующий предмет" \
               " в корзину чаще, чем при использовании ПОИСКА"
-    h1: str = "h1: При добавлении предмета с использованием ПОИСКА пользователь добавляет следующий предмет" \
+    h1: str = "h1: При добавлении предметов с использованием ПОИСКА пользователь добавляет следующий предмет" \
               " в корзину чаще, чем при использовании КАТАЛОГА"
-    users_checked_catalog: dict = dict()
-    users_checked_search: dict = dict()
-    users_addbasket_catalog: dict = dict()
-    users_addbasket_search: dict = dict()
+    users_checked_catalog: Dict[str, bool] = dict()
+    users_checked_search: Dict[str, bool] = dict()
+    users_addbasket_catalog: Dict[str, int] = dict()
+    users_addbasket_search: Dict[str, int] = dict()
 
     def user_last_request(_dataframe: pd.DataFrame, _index: int, _user_id: str) -> int:
         for i in range(_index, -1, -1):
