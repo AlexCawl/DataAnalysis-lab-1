@@ -2,11 +2,14 @@ from typing import Tuple
 from lab_1.util.constants import *
 import pandas as pd
 
+from lab_1.util.decorators import measure_execution_time
+
 
 # Гипотеза №2
 # При добавлении предмета с использованием КАТАЛОГА пользователь добавляет следующий предмет в
 # корзину чаще, чем при использовании ПОИСКА
 
+@measure_execution_time
 def check_if_added_few_items_more_often_from_catalog_then_from_search(dataframe: pd.DataFrame) -> Tuple[str, str]:
     h0: str = "h0: При добавлении предмета с использованием КАТАЛОГА пользователь добавляет следующий предмет" \
               " в корзину чаще, чем при использовании ПОИСКА"
