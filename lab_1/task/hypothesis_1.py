@@ -6,7 +6,7 @@ from lab_1.util.decorators import measure_execution_time
 
 
 # Гипотеза №1
-# При использовании КАТАЛОГА** пользователь добавляет предмет в корзину чаще, чем после **ПОИСКА**
+# При использовании КАТАЛОГА пользователь добавляет предмет в корзину чаще, чем после ПОИСКА
 
 @measure_execution_time
 def check_items_added_from_catalogue_rather_search(dataframe: pd.DataFrame, strict: bool = False) -> Tuple[str, str]:
