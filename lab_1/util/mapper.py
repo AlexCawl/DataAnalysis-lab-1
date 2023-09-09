@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 from typing import List
 
 import pandas as pd
@@ -10,20 +10,21 @@ from .decorators import measure_execution_time
 
 @measure_execution_time
 def map_logs_to_dataframe(logs: List[LogDTO], size: int = 100) -> pd.DataFrame:
-    dataframe: pd.DataFrame = pd.DataFrame(columns=[ID, IP_ADDRESS, DATETIME, HTTP_TYPE, HTTP_CODE, URL])
+    content: List[pd.Series] = []
     for index, log in enumerate(logs):
-        dataframe.loc[index] = map_log_dto_to_values(log)
+        content.append(pd.Series(map_log_dto_to_values(log)))
         if index == size:
             break
+    dataframe: pd.DataFrame = pd.concat(content, axis=1).transpose()
     return dataframe
 
 
-def map_log_dto_to_values(log: LogDTO) -> List[Any]:
-    return [
-        log.user_id,
-        log.ip,
-        log.date_time,
-        log.http_type,
-        log.code,
-        log.url
-    ]
+def map_log_dto_to_values(log: LogDTO) -> Dict[str, Any]:
+    return {
+        ID: log.user_id,
+        IP_ADDRESS: log.ip,
+        DATETIME: log.date_time,
+        HTTP_TYPE: log.http_type,
+        HTTP_CODE: log.code,
+        URL: log.url
+    }
