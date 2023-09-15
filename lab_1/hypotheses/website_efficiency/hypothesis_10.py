@@ -12,8 +12,8 @@ from lab_1.util.constants import *
 
 @measure_execution_time
 def compute_10(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = "Последний запрос пользователя за сессию является ORDER, а не любой другой"
-    h1: str = "Последний запрос пользователя за сессию является любой другой, а не ORDER"
+    h0: str = f"Последний запрос пользователя за сессию является ORDER, а не любой другой с вероятностью более чем {comparable_value:.2f}"
+    h1: str = f"Последний запрос пользователя за сессию является любой другой, а не ORDER с вероятностью не менее чем {comparable_value:.2f}"
     condition: Callable[[int], bool] = lambda v: v > comparable_value
     users: Dict[str, List[str]] = dict()
 
