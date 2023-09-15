@@ -15,6 +15,7 @@ def compute_12(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
     h0: str = f"Среднее число посетителей за день больше, чем {comparable_value:.2f}"
     h1: str = f"Среднее число посетителей за день не больше, чем {comparable_value:.2f}"
     condition: Callable[[int], bool] = lambda x: x > comparable_value
+
     visitors: Dict[str, List[str]] = dict()
 
     for index in range(len(dataframe)):

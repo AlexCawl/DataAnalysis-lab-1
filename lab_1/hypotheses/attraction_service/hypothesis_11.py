@@ -31,5 +31,5 @@ def compute_11(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
     result: float = len(customers) / len(users)
     return (
         h0 if condition(result) else h1,
-        f"customers_size={len(customers)}; users_size={len(users)}"
+        f"customers_size={len(customers)}; users_size={len(users)}; result={result}"
     )

@@ -1,23 +1,45 @@
-from typing import Tuple, Dict, Callable
+from typing import Tuple, Dict, Callable, List
 
+import numpy as np
 import pandas as pd
 
-from lab_1.util.decorators import measure_execution_time
 from lab_1.util.constants import *
+from lab_1.util.decorators import measure_execution_time
 
 
 # №14
 # Вопрос: Какова эффективность работы службы отгрузок товаров?
-# Гипотеза: Средний товарооборот за день больше, чем $VAL
+# Гипотеза: Средний товарооборот за день больше чем $VAL
 
 @measure_execution_time
-def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = "Средний товарооборот за день больше, чем {VAL}"
-    h1: str = "Средний товарооборот за день не больше, чем {VAL}"
+def compute_14(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
+    h0: str = f"Средний товарооборот за день больше чем {comparable_value:.2f}"
+    h1: str = f"Средний товарооборот за день не больше чем {comparable_value:.2f}"
     condition: Callable[[int], bool] = lambda t: t > comparable_value
-    # /// реализация гипотезы \\\
-    result: float = 2  # computed from dataframe
+
+    users_items: Dict[str, List[str]] = dict()
+    orders_per_day: Dict[str, int] = dict()
+
+    def update_data(_user: str, _request: str, _datetime: str) -> None:
+        if _request.startswith(ADDBASKET):
+            if _user in users_items:
+                users_items[_user].append(_request)
+            else:
+                users_items.update({_user: [_request]})
+        elif _request.startswith(ORDER):
+            items: List[str] = users_items.get(_user, [])
+            orders_per_day.update({_datetime: orders_per_day.get(_datetime, 0) + len(items)})
+            items.clear()
+
+    for index in range(len(dataframe)):
+        row: pd.Series = dataframe.loc[index]
+        user_id: str = str(row[ID])
+        url: str = str(row[URL])
+        datetime: str = str(row[DATETIME])[:10]
+        update_data(user_id, url, datetime)
+
+    result: float = np.array(list(orders_per_day.values())).mean()
     return (
-        h0.format(VAL=result) if condition(result) else h1.format(VAL=result),
-        f""
+        h0 if condition(result) else h1,
+        f"days={len(orders_per_day.values())}; result={result}"
     )
