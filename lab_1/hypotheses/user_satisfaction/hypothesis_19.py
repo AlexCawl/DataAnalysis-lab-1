@@ -1,22 +1,19 @@
-from typing import Tuple
+from typing import Tuple, Callable
 
 import pandas as pd
 
-from lab_1.util.Hypothesis import Hypothesis
-from lab_1.util.decorators import measure_execution_time
 from lab_1.util.constants import *
+from lab_1.util.decorators import measure_execution_time
 
-# №19
-# Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
+
+# №19 Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
 # Гипотеза: при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ
 
 @measure_execution_time
-def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    hypothesis: Hypothesis = Hypothesis(
-        h0="при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ",
-        h1="при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется ПОИСКОМ, нежели КАТАЛОГОМ",
-        condition=lambda x: x > comparable_value
-    )
+def compute(dataframe: pd.DataFrame) -> Tuple[str, str]:
+    h0: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ"
+    h1: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется ПОИСКОМ, нежели КАТАЛОГОМ"
+    condition: Callable[[int], bool] = lambda c, s: c > s
 
     def user_last_request(_dataframe: pd.DataFrame, _index: int, _user_id: str) -> int:
         for i in range(_index, -1, -1):
@@ -44,10 +41,7 @@ def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]
             elif last_request == 1:
                 search_count += 1
 
-    hypothesis: Hypothesis = Hypothesis(
-        h0="при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ",
-        h1="при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется ПОИСКОМ, нежели КАТАЛОГОМ",
-        condition=lambda x: x > search_count
+    return (
+        h0 if condition(catalog_count, search_count) else h1,
+        f"catalog_count={catalog_count}; search_count={search_count}"
     )
-
-    return hypothesis.compute(catalog_count), f"{catalog_count} | {search_count}"
