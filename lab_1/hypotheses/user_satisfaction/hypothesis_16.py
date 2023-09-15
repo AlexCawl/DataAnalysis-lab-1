@@ -11,9 +11,9 @@ from lab_1.util.decorators import measure_execution_time
 # Гипотеза: Среднее количество элементов в корзине клиента больше, чем $VAL
 
 @measure_execution_time
-def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = "Среднее количество элементов в корзине клиента больше чем {VAL:.2f}"
-    h1: str = "Среднее количество элементов в корзине клиента не больше чем {VAL:.2f}"
+def compute_16(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
+    h0: str = f"Среднее количество элементов в корзине клиента больше чем {comparable_value:.2f}"
+    h1: str = f"Среднее количество элементов в корзине клиента не больше чем {comparable_value:.2f}"
     condition: Callable[[int], bool] = lambda e: e > comparable_value
     users: Dict[str, bool] = dict()
     add_item_count: int = 0
@@ -32,6 +32,6 @@ def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]
 
     result: float = add_item_count / users_count
     return (
-        h0.format(VAL=result) if condition(result) else h1.format(VAL=result),
+        h0 if condition(result) else h1,
         f"add_item_count={add_item_count}; users_count={users_count}; result={add_item_count / users_count}"
     )

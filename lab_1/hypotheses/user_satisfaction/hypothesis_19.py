@@ -10,7 +10,7 @@ from lab_1.util.decorators import measure_execution_time
 # Гипотеза: при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ
 
 @measure_execution_time
-def compute(dataframe: pd.DataFrame) -> Tuple[str, str]:
+def compute_19(dataframe: pd.DataFrame) -> Tuple[str, str]:
     h0: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ"
     h1: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется ПОИСКОМ, нежели КАТАЛОГОМ"
     condition: Callable[[int], bool] = lambda c, s: c > s
