@@ -1,9 +1,9 @@
-from typing import Tuple
+from typing import Tuple, Callable, Any
 
 import pandas as pd
 
-from lab_1.util.Hypothesis import Hypothesis
 from lab_1.util.decorators import measure_execution_time
+from lab_1.util.constants import *
 
 
 # №6
@@ -11,11 +11,15 @@ from lab_1.util.decorators import measure_execution_time
 # Гипотеза: Общее число запросов КАТАЛОГ, меньше чем ПОИСК
 
 @measure_execution_time
-def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    hypothesis: Hypothesis = Hypothesis(
-        h0="Общее число запросов КАТАЛОГ, меньше чем ПОИСК",
-        h1="Общее число запросов КАТАЛОГ, не меньше чем ПОИСК",
-        condition=lambda x: x > comparable_value
+def compute_6(dataframe: pd.DataFrame) -> Tuple[str, str]:
+    h0: str = "Общее число запросов КАТАЛОГ меньше чем ПОИСК"
+    h1: str = "Общее число запросов КАТАЛОГ не меньше чем ПОИСК"
+    condition: Callable[[int, int], bool] = lambda c, s: c < s
+
+    catalogue_count = len(dataframe[dataframe[URL] == "/catalog.phtml"])
+    search_count = len(dataframe[dataframe[URL] == "/search.phtml"])
+
+    return (
+        h0 if condition(catalogue_count, search_count) else h1,
+        f"catalogue_count={catalogue_count}; search_count={search_count}"
     )
-    value: float = 2  # computed from dataframe
-    return hypothesis.compute(value), f"{value}"
