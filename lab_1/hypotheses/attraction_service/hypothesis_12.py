@@ -11,12 +11,11 @@ from lab_1.util.decorators import measure_execution_time
 # Гипотеза: Среднее число посетителей за день больше, чем $VAL
 
 @measure_execution_time
-def compute(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
+def compute_12(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
     h0: str = f"Среднее число посетителей за день больше, чем {comparable_value:.2f}"
     h1: str = f"Среднее число посетителей за день не больше, чем {comparable_value:.2f}"
     condition: Callable[[int], bool] = lambda x: x > comparable_value
     visitors: Dict[str, List[str]] = dict()
-    unique_visitors: int = 0
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
