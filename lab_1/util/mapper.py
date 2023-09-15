@@ -9,7 +9,7 @@ from .decorators import measure_execution_time
 
 
 @measure_execution_time
-def map_logs_to_dataframe(logs: List[LogDTO], size: int = 100) -> pd.DataFrame:
+def map_logs_to_dataframe(logs: List[LogDTO], size: int = -1) -> pd.DataFrame:
     content: List[pd.Series] = []
     for index, log in enumerate(logs):
         content.append(pd.Series(map_log_dto_to_values(log)))
