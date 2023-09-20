@@ -21,7 +21,7 @@ def compute_14(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
     orders_per_day: Dict[str, int] = dict()
 
     def update_data(_user: str, _request: str, _datetime: str) -> None:
-        if _request.startswith(ADDBASKET):
+        if _request.startswith(ADD_BASKET):
             if _user in users_items:
                 users_items[_user].append(_request)
             else:

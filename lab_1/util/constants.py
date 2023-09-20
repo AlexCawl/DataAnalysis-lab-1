@@ -1,10 +1,31 @@
+# log fields
 IP_ADDRESS: str = "IP_ADDRESS"
 DATETIME: str = "DATETIME"
 HTTP_CODE: str = "HTTP_CODE"
 URL: str = "URL"
-HTTP_TYPE: str = "HTTP_TYPE"
+HTTP_METHOD: str = "HTTP_TYPE"
 ID: str = "ID"
+
+# website urls
 SEARCH: str = "/search"
 CATALOG: str = "/catalog"
-ADDBASKET: str = "/addbasket"
+ADD_BASKET: str = "/addbasket"
 ORDER: str = "/order"
+
+# website url's patterns
+SEARCH_PATTERN: str = r"/search\.phtml"
+CATALOG_PATTERN: str = r"/catalog\.phtml"
+ADD_BASKET_PATTERN: str = r"/addbasket\.phtml\?id_book=(\d+)"
+ORDER_PATTERN: str = r"/order\.phtml"
+
+# dataframe fields
+USER: str = "USER"
+COUNTRY: str = "COUNTRY"
+SECOND: str = "SECOND"
+MINUTE: str = "MINUTE"
+HOUR: str = "HOUR"
+DAY: str = "DAY"
+MONTH: str = "MONTH"
+YEAR: str = "YEAR"
+DAY_OF_WEEK: str = "DAY_OF_WEEK"
+ENDPOINT: str = "ENDPOINT"

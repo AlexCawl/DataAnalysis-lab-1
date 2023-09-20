@@ -56,4 +56,5 @@ def check_hypotheses(dataframe: pd.DataFrame):
 if __name__ == '__main__':
     data: Tuple[List[LogDTO], int] = load_logs_from_file("../data/access.log")
     df: pd.DataFrame = map_logs_to_dataframe(data[0])
-    check_hypotheses(df)
+    print(df)
+    # check_hypotheses(df)

@@ -21,7 +21,7 @@ def compute_15(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
     users_orders: List[int] = []
 
     def update_data(_user: str, _request: str) -> None:
-        if _request.startswith(ADDBASKET):
+        if _request.startswith(ADD_BASKET):
             if _user in users_items:
                 users_items[_user].append(_request)
             else:

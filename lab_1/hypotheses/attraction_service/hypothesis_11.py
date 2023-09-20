@@ -24,7 +24,7 @@ def compute_11(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
         user_id: str = str(row[ID])
         url: str = str(row[URL])
 
-        if url.startswith(ADDBASKET):
+        if url.startswith(ADD_BASKET):
             customers.add(user_id)
         users.add(user_id)
 

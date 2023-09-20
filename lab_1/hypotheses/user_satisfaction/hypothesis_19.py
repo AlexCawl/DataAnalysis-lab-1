@@ -34,7 +34,7 @@ def compute_19(dataframe: pd.DataFrame) -> Tuple[str, str]:
         user_id: str = str(row[ID])
         url: str = str(row[URL])
 
-        if url.startswith(ADDBASKET):
+        if url.startswith(ADD_BASKET):
             last_request: int = user_last_request(dataframe, index, user_id)
             if last_request == 0:
                 catalog_count += 1

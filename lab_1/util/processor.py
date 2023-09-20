@@ -19,7 +19,7 @@ def parse_into_tokens(log_as_line: str) -> Dict[str, str]:
         DATETIME: re.findall(r'(?<=\[)(.*)(?=\])', log_as_line)[0],
         HTTP_CODE: re.findall(r'(\d+)', log_as_line)[-3],
         ID: re.findall(r'ID\d+', log_as_line)[0],
-        HTTP_TYPE: request.split(' ')[0]
+        HTTP_METHOD: request.split(' ')[0]
     }
 
 
@@ -27,7 +27,7 @@ def parse_into_dto(data: Dict[str, str]) -> LogDTO:
     return LogDTO(
         data[IP_ADDRESS],
         data[DATETIME],
-        data[HTTP_TYPE],
+        data[HTTP_METHOD],
         data[URL],
         data[HTTP_CODE],
         data[ID]
