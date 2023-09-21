@@ -30,7 +30,7 @@ def compute_11(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
 
     result: float = len(customers) / len(users)
     return (
-        f"Коэффициент становления клиентом из посетителя{result}",
+        f"Коэффициент становления клиентом из посетителя {result}",
         f"customers_size={len(customers)}; users_size={len(users)}; result={result}"
     )
     # return (
