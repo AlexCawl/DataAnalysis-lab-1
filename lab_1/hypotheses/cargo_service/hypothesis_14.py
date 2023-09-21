@@ -9,14 +9,10 @@ from lab_1.util.decorators import measure_execution_time
 
 # №14
 # Вопрос: Какова эффективность работы службы отгрузок товаров?
-# Гипотеза: Средний товарооборот за день
+# Гипотеза: Средний товарооборот за день равен: ...
 
 @measure_execution_time
-def compute_14(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    # h0: str = f"Средний товарооборот за день больше чем {comparable_value:.2f}"
-    # h1: str = f"Средний товарооборот за день не больше чем {comparable_value:.2f}"
-    # condition: Callable[[int], bool] = lambda t: t > comparable_value
-
+def compute_14(dataframe: pd.DataFrame) -> Tuple[float, str]:
     users_items: Dict[str, List[str]] = dict()
     orders_per_day: Dict[str, int] = dict()
 
@@ -40,10 +36,6 @@ def compute_14(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
 
     result: float = np.array(list(orders_per_day.values())).mean()
     return (
-        f"Средний товарооборот за день {result}",
+        result,
         f"days={len(orders_per_day.values())}; result={result}"
     )
-    # return (
-    #     h0 if condition(result) else h1,
-    #     f"days={len(orders_per_day.values())}; result={result}"
-    # )
