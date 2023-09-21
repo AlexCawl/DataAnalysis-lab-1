@@ -9,13 +9,13 @@ from lab_1.util.decorators import measure_execution_time
 
 # №16
 # Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
-# Гипотеза: Среднее количество элементов в корзине клиента больше, чем $VAL
+# Гипотеза: Среднее количество элементов в корзине клиента
 
 @measure_execution_time
 def compute_16(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = f"Среднее количество элементов в корзине клиента больше чем {comparable_value:.2f}"
-    h1: str = f"Среднее количество элементов в корзине клиента не больше чем {comparable_value:.2f}"
-    condition: Callable[[int], bool] = lambda e: e > comparable_value
+    # h0: str = f"Среднее количество элементов в корзине клиента больше чем {comparable_value:.2f}"
+    # h1: str = f"Среднее количество элементов в корзине клиента не больше чем {comparable_value:.2f}"
+    # condition: Callable[[int], bool] = lambda e: e > comparable_value
 
     users_items: Dict[str, List[str]] = dict()
 
@@ -33,7 +33,13 @@ def compute_16(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
         update_data(user_id, url)
 
     result: float = np.array(list(map(lambda l: len(l), users_items.values()))).mean()
+
     return (
-        h0 if condition(result) else h1,
+        f"Среднее количество элементов в корзине клиента {result}",
         f"clients_size={len(users_items.values())}; result={result}"
     )
+
+    # return (
+    #     h0 if condition(result) else h1,
+    #     f"clients_size={len(users_items.values())}; result={result}"
+    # )

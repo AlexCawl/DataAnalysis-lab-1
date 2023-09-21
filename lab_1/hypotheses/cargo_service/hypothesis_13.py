@@ -9,13 +9,13 @@ from lab_1.util.decorators import measure_execution_time
 
 # №13
 # Вопрос: Какова эффективность работы службы отгрузок товаров?
-# Гипотеза: Средний объем продуктовой корзины покупателя больше чем $VAL
+# Гипотеза: Средний объем продуктовой корзины покупателя
 
 @measure_execution_time
 def compute_13(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = f"Среднее значение заказываемых товаров у покупателя больше чем {comparable_value:.2f}"
-    h1: str = f"Среднее значение заказываемых товаров у покупателя не больше чем {comparable_value:.2f}"
-    condition: Callable[[int], bool] = lambda e: e > comparable_value
+    # h0: str = f"Среднее значение заказываемых товаров у покупателя больше чем {comparable_value:.2f}"
+    # h1: str = f"Среднее значение заказываемых товаров у покупателя не больше чем {comparable_value:.2f}"
+    # condition: Callable[[int], bool] = lambda e: e > comparable_value
 
     users_items: Dict[str, List[str]] = dict()
     users_orders: List[int] = []
@@ -39,6 +39,10 @@ def compute_13(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
 
     result: float = np.array(users_orders).mean()
     return (
-        h0 if condition(result) else h1,
+        f"Средний объем продуктовой корзины покупателя {result}",
         f"orders_size={len(users_orders)}; result={result}"
     )
+    # return (
+    #     h0 if condition(result) else h1,
+    #     f"orders_size={len(users_orders)}; result={result}"
+    # )
