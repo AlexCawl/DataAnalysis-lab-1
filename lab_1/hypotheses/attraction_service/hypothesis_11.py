@@ -8,13 +8,13 @@ from lab_1.util.decorators import measure_execution_time
 
 # №11
 # Вопрос: Какова эффективность работы службы привлечения клиентов?
-# Гипотеза: Коэффициент становление клиентом из посетителя больше $VAL
+# Гипотеза: Коэффициент становление клиентом из посетителя
 
 @measure_execution_time
 def compute_11(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = f"Коэффициент становление клиентом из посетителя больше чем {comparable_value:.2f}"
-    h1: str = f"Коэффициент становление клиентом из посетителя не больше чем {comparable_value:.2f}"
-    condition: Callable[[int], bool] = lambda k: k > comparable_value
+    # h0: str = f"Коэффициент становление клиентом из посетителя больше чем {comparable_value:.2f}"
+    # h1: str = f"Коэффициент становление клиентом из посетителя не больше чем {comparable_value:.2f}"
+    # condition: Callable[[int], bool] = lambda k: k > comparable_value
 
     users: Set[str] = set()
     customers: Set[str] = set()
@@ -30,6 +30,10 @@ def compute_11(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
 
     result: float = len(customers) / len(users)
     return (
-        h0 if condition(result) else h1,
+        f"Коэффициент становления клиентом из посетителя {result}",
         f"customers_size={len(customers)}; users_size={len(users)}; result={result}"
     )
+    # return (
+    #     h0 if condition(result) else h1,
+    #     f"customers_size={len(customers)}; users_size={len(users)}; result={result}"
+    # )

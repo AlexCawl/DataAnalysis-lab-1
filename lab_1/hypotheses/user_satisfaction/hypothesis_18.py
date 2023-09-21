@@ -9,13 +9,14 @@ from lab_1.util.decorators import measure_execution_time
 
 # №18
 # Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
-# Гипотеза: Среднее время браузинга товаров на сайте меньше чем $VAL
+# Гипотеза: Среднее время браузинга товаров на сайте
 
 @measure_execution_time
 def compute_18(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    h0: str = f"Среднее время браузинга товаров на сайте меньше чем {comparable_value:.2f} минут"
-    h1: str = f"Среднее время браузинга товаров на сайте не меньше чем {comparable_value:.2f} минут"
-    condition: Callable[[int], bool] = lambda t: t < comparable_value
+    # h0: str = f"Среднее время браузинга товаров на сайте меньше чем {comparable_value:.2f} минут"
+    # h1: str = f"Среднее время браузинга товаров на сайте не меньше чем {comparable_value:.2f} минут"
+    # condition: Callable[[int], bool] = lambda t: t < comparable_value
+
     users: Dict[str, List[str]] = dict()
     users_count: int = 0
 
@@ -44,7 +45,13 @@ def compute_18(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
             total_difference += local_difference
 
     result: float = total_difference / users_count
+
     return (
-        h0 if condition(result) else h1,
+        f"Среднее время браузинга товаров на сайте {result}",
         f"result={result}"
     )
+
+    # return (
+    #     h0 if condition(result) else h1,
+    #     f"result={result}"
+    # )
