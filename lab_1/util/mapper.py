@@ -6,6 +6,7 @@ import pandas as pd
 from .LogDTO import LogDTO
 from .constants import *
 from .decorators import measure_execution_time
+from .extensions import parse_timestamp, get_county_by_ip
 
 
 @measure_execution_time
@@ -20,11 +21,10 @@ def map_logs_to_dataframe(logs: List[LogDTO], size: int = -1) -> pd.DataFrame:
 
 
 def map_log_dto_to_values(log: LogDTO) -> Dict[str, Any]:
-    return {
-        ID: log.user_id,
-        IP_ADDRESS: log.ip,
-        DATETIME: log.date_time,
-        HTTP_TYPE: log.http_type,
-        HTTP_CODE: log.code,
+    data: Dict[str, Any] = {
+        USER: log.user_id,
+        COUNTRY: get_county_by_ip(log.ip),
         URL: log.url
     }
+    data.update(parse_timestamp(log.date_time))
+    return data

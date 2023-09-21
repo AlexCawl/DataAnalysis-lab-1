@@ -8,14 +8,10 @@ from lab_1.util.decorators import measure_execution_time
 
 # №12
 # Вопрос: Какова эффективность работы службы привлечения клиентов?
-# Гипотеза: Среднее число посетителей за день
+# Гипотеза: Среднее число посетителей за день равно: ...
 
 @measure_execution_time
-def compute_12(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, str]:
-    # h0: str = f"Среднее число посетителей за день больше, чем {comparable_value:.2f}"
-    # h1: str = f"Среднее число посетителей за день не больше, чем {comparable_value:.2f}"
-    # condition: Callable[[int], bool] = lambda x: x > comparable_value
-
+def compute_12(dataframe: pd.DataFrame) -> Tuple[float, str]:
     visitors: Dict[str, List[str]] = dict()
 
     for index in range(len(dataframe)):
@@ -37,10 +33,6 @@ def compute_12(dataframe: pd.DataFrame, comparable_value: float) -> Tuple[str, s
 
     result: float = overall_sum / len(visitors)
     return (
-        f"Среднее число посетителей за день {result}",
+        result,
         f"overall_sum={overall_sum}; visitors_count={len(visitors)}; result={result}"
     )
-    # return (
-    #     h0 if condition(result) else h1,
-    #     f"overall_sum={overall_sum}; visitors_count={len(visitors)}; result={result}"
-    # )
