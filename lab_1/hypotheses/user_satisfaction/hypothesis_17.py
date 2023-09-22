@@ -31,7 +31,7 @@ def _compute_17(dataframe: pd.DataFrame) -> float:
     users: Dict[str, List[str]] = dict()
     users_count: int = 0
 
-    for index in range(len(dataframe)):
+    for index in dataframe.index:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         request_time: str = str(row[DATETIME])[:19]  # TODO какой 19???

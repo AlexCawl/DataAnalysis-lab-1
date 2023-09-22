@@ -5,7 +5,7 @@ import pandas as pd
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
-from lab_1.util.extensions import is_add_request
+from lab_1.util.extensions import is_add_request, get_id_from_add_request
 from lab_1.util.graphics import single_plot, multi_plot
 from lab_1.util.splitter import split_by_keys
 
@@ -29,19 +29,16 @@ def main_16(dataframe: pd.DataFrame, path: str) -> float:
 
 @measure_execution_time
 def _compute_16(dataframe: pd.DataFrame) -> float:
-    users_items: Dict[str, List[int]] = dict()
+    users_items: Dict[str, List[str]] = dict()
 
-    def update_data(_user: str, _request: str) -> None:
-        is_add: bool
-        item_id: int
-        is_add, item_id = is_add_request(_request)
-        if is_add:
+    def update_data(_user: str, request: str) -> None:
+        if is_add_request(request):
             if _user in users_items:
-                users_items[_user].append(item_id)
+                users_items[_user].append(get_id_from_add_request(request))
             else:
-                users_items.update({_user: [item_id]})
+                users_items.update({_user: [get_id_from_add_request(request)]})
 
-    for index in range(len(dataframe)):
+    for index in dataframe.index:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         url: str = str(row[ENDPOINT])
