@@ -1,43 +1,44 @@
-from typing import Tuple, Set, Dict
+from typing import List, Set, Dict
 
 import pandas as pd
-from pandas.core.groupby import DataFrameGroupBy
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
 from lab_1.util.extensions import is_add_request
+from lab_1.util.graphics import single_plot, multi_plot
+from lab_1.util.splitter import split_by_keys
 
 
 # №11
 # Вопрос: Какова эффективность работы службы привлечения клиентов?
-# Гипотеза: Коэффициент становление клиентом из посетителя за период [ДЕНЬ/НЕДЕЛЯ/МЕСЯЦ/ВСЕ ВРЕМЯ/ДЕНЬ НЕДЕЛИ] равен: ...
+# Гипотеза: Коэффициент становление клиентом из посетителя за период [ЧАС/ДЕНЬ/НЕДЕЛЯ/МЕСЯЦ/ВСЕ ВРЕМЯ/ДЕНЬ НЕДЕЛИ] равен: ...
 
 @measure_execution_time
-def compute_11(dataframe: pd.DataFrame) -> Tuple[float, str]:
+def main_11(dataframe: pd.DataFrame, path: str) -> float:
+    keys: List[str] = [DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, HOUR_OF_DAY]
+    data: Dict[str, Dict[str, float]] = dict()
+    for key in keys:
+        values: Dict[str, float] = split_by_keys(key, dataframe, lambda frame: _compute_11(frame))
+        data.update({key: values})
+        single_plot(values, f"11-{key}", path)
+
+    all_hist_data: List[float] = []
+    for key, value in data.items():
+        all_hist_data.extend(value.values())
+    multi_plot(all_hist_data, "11-all", path)
+    return _compute_11(dataframe)
+
+
+def _compute_11(dataframe: pd.DataFrame) -> float:
     users: Set[str] = set()
     customers: Set[str] = set()
 
-    for index in range(len(dataframe)):
+    for index in dataframe.index:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         url: str = str(row[ENDPOINT])
 
-        if is_add_request(url)[0]:
+        if is_add_request(url):
             customers.add(user_id)
         users.add(user_id)
-
-    result: float = len(customers) / len(users)
-    return (
-        result,
-        f"customers_size={len(customers)}; users_size={len(users)}; result={result}"
-    )
-
-
-@measure_execution_time
-def _plot_for_day(grouped_dataframe: pd.DataFrame) -> None:
-    # Подсчет датафрейма {День: значение}
-    # sns.hist по значениям
-    data: DataFrameGroupBy = grouped_dataframe.groupby(grouped_dataframe.TIMESTAMP.dayofyear)
-    print(data)
-
-    pass
+    return len(customers) / len(users)

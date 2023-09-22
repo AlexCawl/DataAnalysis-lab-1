@@ -35,7 +35,7 @@ def compute_14(dataframe: pd.DataFrame) -> Tuple[float, str]:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         url: str = str(row[ENDPOINT])
-        datetime: str = f"{row[DAY]}#{row[MONTH]}#{row[YEAR]}"
+        datetime: str = f"{row[DATE_DAY_PRECISION]}#{row[MONTH]}#{row[YEAR]}"
         update_data(user_id, url, datetime)
 
     result: float = np.array(list(orders_per_day.values())).mean()
