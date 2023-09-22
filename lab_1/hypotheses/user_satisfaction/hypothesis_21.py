@@ -31,7 +31,7 @@ def _compute_21(dataframe: pd.DataFrame) -> float:
     users_count: int = 0
     transition_count: int = 0
 
-    for index in range(len(dataframe)):
+    for index in dataframe.index:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         if users.get(user_id) is None:

@@ -11,7 +11,7 @@ from lab_1.util.splitter import split_by_keys
 
 # №14
 # Вопрос: Какова эффективность работы службы отгрузок товаров?
-# Гипотеза: Средний товарооборот за день равен: ...
+# Гипотеза: Средний товарооборот за весь период равен: ...
 
 @measure_execution_time
 def main_14(dataframe: pd.DataFrame, path: str) -> float:
