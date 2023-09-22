@@ -5,6 +5,8 @@ import pandas as pd
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
+from lab_1.util.graphics import single_plot, multi_plot
+from lab_1.util.splitter import split_by_keys
 
 
 # №17
@@ -12,8 +14,21 @@ from lab_1.util.decorators import measure_execution_time
 # Гипотеза: Среднее время браузинга товаров на сайте равно: ...
 
 @measure_execution_time
-def compute_17(dataframe: pd.DataFrame) -> Tuple[float, str]:
-    users: Dict[str, List[int]] = dict()
+def main_17(dataframe: pd.DataFrame, path: str) -> float:
+    keys: List[str] = [DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, HOUR_OF_DAY]
+    data: Dict[str, Dict[str, float]] = dict()
+    for key in keys:
+        values: Dict[str, float] = split_by_keys(key, dataframe, lambda frame: _compute_17(frame))
+        data.update({key: values})
+        single_plot(values, f"17-{key}", path)
+
+    multi_plot(list(data[DATE_DAY_PRECISION].values()), "17-all", path)
+    return _compute_17(dataframe)
+
+
+@measure_execution_time
+def _compute_17(dataframe: pd.DataFrame) -> float:
+    users: Dict[str, List[str]] = dict()
     users_count: int = 0
 
     for index in range(len(dataframe)):
@@ -40,9 +55,4 @@ def compute_17(dataframe: pd.DataFrame) -> Tuple[float, str]:
             local_difference: float = (last_request - first_request).total_seconds() / 60
             total_difference += local_difference
 
-    result: float = total_difference / users_count
-
-    return (
-        result,
-        f"result={result}"
-    )
+    return total_difference / users_count
