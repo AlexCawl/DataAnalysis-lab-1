@@ -1,5 +1,5 @@
 from datetime import datetime as Datetime
-from typing import Tuple, Dict, List, Callable
+from typing import Dict, List
 
 import pandas as pd
 
@@ -28,30 +28,29 @@ def main_17(dataframe: pd.DataFrame, path: str) -> float:
 
 @measure_execution_time
 def _compute_17(dataframe: pd.DataFrame) -> float:
-    users: Dict[str, List[str]] = dict()
+    users: Dict[str, List[pd.Timestamp]] = dict()
     users_count: int = 0
 
     for index in dataframe.index:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
-        request_time: str = str(row[DATETIME])[:19]  # TODO какой 19???
         if users.get(user_id) is None:
-            users.update({user_id: [request_time]})
+            users.update({user_id: [row[DATETIME]]})
             users_count += 1
         else:
-            list_to_update: List[str] = users[user_id]
+            list_to_update: List[pd.Timestamp] = users[user_id]
             if len(users[user_id]) == 1:
-                list_to_update.append(request_time)
+                list_to_update.append(row[DATETIME])
                 users.update({user_id: list_to_update})
             else:
-                list_to_update[1] = request_time
+                list_to_update[1] = row[DATETIME]
                 users.update({user_id: list_to_update})
 
     total_difference: float = 0
     for key in users.keys():
         if len(users[key]) > 1:
-            first_request: Datetime = Datetime.strptime(users[key][0], "%d/%b/%Y:%H:%M:%S")
-            last_request: Datetime = Datetime.strptime(users[key][1], "%d/%b/%Y:%H:%M:%S")
+            first_request: Datetime = users[key][0].to_pydatetime()
+            last_request: Datetime = users[key][0].to_pydatetime()
             local_difference: float = (last_request - first_request).total_seconds() / 60
             total_difference += local_difference
 
