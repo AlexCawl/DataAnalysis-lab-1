@@ -1,11 +1,12 @@
-from typing import Tuple, Dict, List
+from typing import Dict, List
 
-import numpy as np
 import pandas as pd
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
-from lab_1.util.extensions import is_add_request, is_order_request
+from lab_1.util.extensions import is_add_request, is_order_request, get_id_from_add_request
+from lab_1.util.graphics import single_plot, multi_plot
+from lab_1.util.splitter import split_by_keys
 
 
 # №14
@@ -13,33 +14,37 @@ from lab_1.util.extensions import is_add_request, is_order_request
 # Гипотеза: Средний товарооборот за день равен: ...
 
 @measure_execution_time
-def compute_14(dataframe: pd.DataFrame) -> Tuple[float, str]:
-    users_items: Dict[str, List[int]] = dict()
-    orders_per_day: Dict[str, int] = dict()
+def main_14(dataframe: pd.DataFrame, path: str) -> float:
+    keys: List[str] = [DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, HOUR_OF_DAY]
+    data: Dict[str, Dict[str, float]] = dict()
+    for key in keys:
+        values: Dict[str, float] = split_by_keys(key, dataframe, lambda frame: _compute_14(frame))
+        data.update({key: values})
+        single_plot(values, f"14-{key}", path)
 
-    def update_data(_user: str, request: str, _datetime: str) -> None:
-        is_add: bool
-        item_id: int
-        is_add, item_id = is_add_request(request)
-        if is_add:
+    multi_plot(list(data[DATE_DAY_PRECISION].values()), "14-all", path)
+    return _compute_14(dataframe)
+
+
+def _compute_14(dataframe: pd.DataFrame) -> float:
+    users_items: Dict[str, List[str]] = dict()
+    ordered_count: Dict[str, int] = {"ordered_count": 0}
+
+    def update_data(_user: str, request: str) -> None:
+        if is_add_request(request):
             if _user in users_items:
-                users_items[_user].append(item_id)
+                users_items[_user].append(get_id_from_add_request(request))
             else:
-                users_items.update({_user: [item_id]})
+                users_items.update({_user: [get_id_from_add_request(request)]})
         elif is_order_request(request):
             items: List[str] = users_items.get(_user, [])
-            orders_per_day.update({_datetime: orders_per_day.get(_datetime, 0) + len(items)})
+            ordered_count.update({"ordered_count": ordered_count["ordered_count"] + len(items)})
             items.clear()
 
-    for index in range(len(dataframe)):
+    for index in dataframe.index:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         url: str = str(row[ENDPOINT])
-        datetime: str = f"{row[DATE_DAY_PRECISION]}#{row[MONTH]}#{row[YEAR]}"
-        update_data(user_id, url, datetime)
+        update_data(user_id, url)
 
-    result: float = np.array(list(orders_per_day.values())).mean()
-    return (
-        result,
-        f"days={len(orders_per_day.values())}; result={result}"
-    )
+    return ordered_count["ordered_count"]
