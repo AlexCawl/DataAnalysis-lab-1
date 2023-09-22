@@ -3,10 +3,13 @@ from typing import Tuple, List, Dict
 import pandas as pd
 import os
 
+from pandas.core.groupby import DataFrameGroupBy
+
 from lab_1.hypotheses.attraction_service import hypothesis_11, hypothesis_12
 from lab_1.hypotheses.cargo_service import hypothesis_13, hypothesis_14
 from lab_1.hypotheses.user_satisfaction import hypothesis_16, hypothesis_17, hypothesis_19, hypothesis_21
 from lab_1.hypotheses.website_efficiency import hypothesis_6, hypothesis_10, hypothesis_20
+from lab_1.util.constants import TIMESTAMP
 from util.LogDTO import LogDTO
 from util.decorators import measure_execution_time
 from util.loader import load_logs_from_file, load_from_csv, save_to_csv
@@ -63,4 +66,8 @@ if __name__ == '__main__':
         save_to_csv(DATAFRAME_PATH, df)
     else:
         raise Exception("No .log files in ../data")
-    check_hypotheses(df)
+    pd.to_datetime(df[TIMESTAMP])
+
+    data: DataFrameGroupBy = df.groupby(grouped_dataframe.TIMESTAMP.dayofyear)
+    print(data)
+    # check_hypotheses(df)

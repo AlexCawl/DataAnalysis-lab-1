@@ -21,10 +21,9 @@ def map_logs_to_dataframe(logs: List[LogDTO], size: int = -1) -> pd.DataFrame:
 
 
 def map_log_dto_to_values(log: LogDTO) -> Dict[str, Any]:
-    data: Dict[str, Any] = {
+    return {
         USER: log.user_id,
         COUNTRY: get_county_by_ip(log.ip),
-        URL: log.url
+        ENDPOINT: log.url,
+        TIMESTAMP: parse_timestamp(log.date_time)
     }
-    data.update(parse_timestamp(log.date_time))
-    return data

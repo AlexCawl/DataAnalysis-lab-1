@@ -4,6 +4,7 @@ import pandas as pd
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
+from lab_1.util.extensions import is_catalogue_request, is_search_request
 
 
 # №19 Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
@@ -15,14 +16,14 @@ def compute_19(dataframe: pd.DataFrame) -> Tuple[str, str]:
     h1: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется ПОИСКОМ, нежели КАТАЛОГОМ"
     condition: Callable[[int], bool] = lambda c, s: c > s
 
-    def user_last_request(_dataframe: pd.DataFrame, _index: int, _user_id: str) -> int:
-        for i in range(_index, -1, -1):
-            _row: pd.Series = _dataframe.loc[i]
-            if str(_row[ID]) == _user_id:
-                _url: str = str(_row[URL])
-                if _url.startswith(CATALOG):
+    def user_last_request(_dataframe: pd.DataFrame, log_index: int, user: str) -> int:
+        for i in range(log_index, -1, -1):
+            log: pd.Series = _dataframe.loc[i]
+            if str(log[USER]) == user:
+                endpoint: str = str(log[ENDPOINT])
+                if is_catalogue_request(endpoint):
                     return 0
-                elif _url.startswith(SEARCH):
+                elif is_search_request(endpoint):
                     return 1
         return -1
 

@@ -47,17 +47,13 @@ def is_search_request(request: str) -> bool:
     return bool(re.match(SEARCH_PATTERN, request))
 
 
-def parse_timestamp(timestamp: str) -> Dict[str, Any]:
+def parse_timestamp(timestamp: str) -> pd.Timestamp:
     datetime_pattern: str = "%d/%b/%Y:%H:%M:%S"
     time_raw: str = timestamp.split(" ")[0]
     time: Datetime = Datetime.strptime(time_raw, datetime_pattern)
-    return {
-        DAY: time.day,
-        MONTH: time.month,
-        YEAR: time.year,
-        HOUR: time.hour,
-        DAY_OF_WEEK: time.weekday()
-    }
+    return pd.Timestamp(
+        year=time.year, month=time.month, day=time.day, hour=time.hour, minute=time.minute, second=time.second
+    )
 
 
 _geo = geolite2.reader()
