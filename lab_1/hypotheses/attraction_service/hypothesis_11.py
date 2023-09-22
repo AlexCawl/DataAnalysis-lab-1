@@ -22,10 +22,7 @@ def main_11(dataframe: pd.DataFrame, path: str) -> float:
         data.update({key: values})
         single_plot(values, f"11-{key}", path)
 
-    all_hist_data: List[float] = []
-    for key, value in data.items():
-        all_hist_data.extend(value.values())
-    multi_plot(all_hist_data, "11-all", path)
+    multi_plot(list(data[DATE_DAY_PRECISION].values()), "11-all", path)
     return _compute_11(dataframe)
 
 
