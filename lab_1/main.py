@@ -13,18 +13,18 @@ from util.mapper import map_logs_to_dataframe, prepare_dataframe
 
 @measure_execution_time
 def check_hypotheses(_dataframe: pd.DataFrame):
-    # print("Гипотеза №11")
-    # print(
-    #     f"Коэффициент становление клиентом из посетителя за весь период равен: {hypothesis_11.main_11(_dataframe, 'data'):.2f}"
-    # )
-    # print("Гипотеза №12")
-    # print(
-    #     f"Среднее число посетителей за весь период равно: {hypothesis_12.main_12(dataframe, 'data'):.2f}"
-    # )
-    # print("Гипотеза №13")
-    # print(
-    #     f"Средний объем продуктовой корзины покупателя равен: {hypothesis_13.main_13(dataframe, 'data'):.2f}"
-    # )
+    print("Гипотеза №11")
+    print(
+        f"Коэффициент становление клиентом из посетителя за весь период равен: {hypothesis_11.main_11(_dataframe, 'data'):.2f}"
+    )
+    print("Гипотеза №12")
+    print(
+        f"Среднее число посетителей за весь период равно: {hypothesis_12.main_12(dataframe, 'data'):.2f}"
+    )
+    print("Гипотеза №13")
+    print(
+        f"Средний объем продуктовой корзины покупателя равен: {hypothesis_13.main_13(dataframe, 'data'):.2f}"
+    )
     print("Гипотеза №14")
     print(
         f"Средний товарооборот за день равен: {hypothesis_14.main_14(dataframe, 'data'):.2f}"
