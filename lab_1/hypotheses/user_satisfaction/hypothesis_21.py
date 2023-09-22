@@ -18,7 +18,7 @@ def compute_21(dataframe: pd.DataFrame) -> Tuple[float, str]:
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        user_id: str = str(row[ID])
+        user_id: str = str(row[USER])
         if users.get(user_id) is None:
             users.update({user_id: True})
             users_count += 1

@@ -6,7 +6,7 @@ def measure_execution_time(func):
         begin: float = time.time()
         result = func(*args, **kwargs)
         end: float = time.time()
-        print(f"Execution time for '{func.__name__}' taken {end - begin} seconds")
+        print(f"Execution time for '{func.__name__}' took {end - begin} seconds")
         return result
 
     return inner1

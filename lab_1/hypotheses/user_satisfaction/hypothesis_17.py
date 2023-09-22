@@ -13,12 +13,12 @@ from lab_1.util.decorators import measure_execution_time
 
 @measure_execution_time
 def compute_17(dataframe: pd.DataFrame) -> Tuple[float, str]:
-    users: Dict[str, List[str]] = dict()
+    users: Dict[str, List[int]] = dict()
     users_count: int = 0
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        user_id: str = str(row[ID])
+        user_id: str = str(row[USER])
         request_time: str = str(row[DATETIME])[:19]  # TODO какой 19???
         if users.get(user_id) is None:
             users.update({user_id: [request_time]})

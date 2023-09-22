@@ -1,38 +1,30 @@
-from typing import Tuple, Callable, Dict, List
+from typing import Dict, List
 
 import pandas as pd
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
+from lab_1.util.graphics import single_plot, multi_plot
+from lab_1.util.splitter import split_by_keys
 
 
 # №12
 # Вопрос: Какова эффективность работы службы привлечения клиентов?
-# Гипотеза: Среднее число посетителей за день равно: ...
+# Гипотеза: Среднее число посетителей за период [ДЕНЬ/НЕДЕЛЯ/МЕСЯЦ/ВСЕ ВРЕМЯ/ДЕНЬ НЕДЕЛИ] равно: ...
+
 
 @measure_execution_time
-def compute_12(dataframe: pd.DataFrame) -> Tuple[float, str]:
-    visitors: Dict[str, List[str]] = dict()
+def main_12(dataframe: pd.DataFrame, path: str) -> float:
+    keys: List[str] = [DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, HOUR_OF_DAY]
+    data: Dict[str, Dict[str, float]] = dict()
+    for key in keys:
+        values: Dict[str, float] = split_by_keys(key, dataframe, lambda frame: _compute_12(frame))
+        data.update({key: values})
+        single_plot(values, f"12-{key}", path)
 
-    for index in range(len(dataframe)):
-        row: pd.Series = dataframe.loc[index]
-        user_id: str = str(row[ID])
-        _date: str = str(row[DATETIME])[:10]
+    multi_plot(list(data[DATE_DAY_PRECISION].values()), "12-all", path)
+    return _compute_12(dataframe)
 
-        if _date not in visitors.keys():
-            visitors.update({_date: []})
 
-        if user_id not in visitors[_date]:
-            visitors[_date].append(user_id)
-
-    overall_sum: int = 0
-
-    for amount_of_users in visitors.values():
-        sum_for_day: int = len(amount_of_users)
-        overall_sum += sum_for_day
-
-    result: float = overall_sum / len(visitors)
-    return (
-        result,
-        f"overall_sum={overall_sum}; visitors_count={len(visitors)}; result={result}"
-    )
+def _compute_12(dataframe: pd.DataFrame) -> float:
+    return dataframe.groupby(USER).ngroups

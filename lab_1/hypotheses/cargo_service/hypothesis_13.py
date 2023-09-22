@@ -1,10 +1,11 @@
-from typing import Tuple, Dict, Callable, List
+from typing import Tuple, Dict, List
 
 import numpy as np
 import pandas as pd
 
 from lab_1.util.constants import *
 from lab_1.util.decorators import measure_execution_time
+from lab_1.util.extensions import is_order_request
 
 
 # №13
@@ -22,15 +23,15 @@ def compute_13(dataframe: pd.DataFrame) -> Tuple[float, str]:
                 users_items[_user].append(_request)
             else:
                 users_items.update({_user: [_request]})
-        elif _request.startswith(ORDER):
+        elif is_order_request(_request):
             items: List[str] = users_items.get(_user, [])
             users_orders.append(len(items))
             items.clear()
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        user_id: str = str(row[ID])
-        url: str = str(row[URL])
+        user_id: str = str(row[USER])
+        url: str = str(row[ENDPOINT])
         update_data(user_id, url)
 
     result: float = np.array(users_orders).mean()

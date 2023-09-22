@@ -1,10 +1,11 @@
 import re
 from datetime import datetime as Datetime
-from re import Match
-from typing import Tuple, Dict, Set, Any
-from geolite2 import geolite2
-import pandas as pd
+from typing import Dict, Set, Any
+
 import numpy as np
+import pandas as pd
+from geolite2 import geolite2
+
 from lab_1.util.constants import *
 
 
@@ -27,43 +28,39 @@ def get_users_baskets(dataframe: pd.DataFrame) -> Dict[str, Set[str]]:
     return result
 
 
-def is_add_request(request: str) -> Tuple[bool, int]:
-    result: Match[str] | None = re.match(ADD_BASKET_PATTERN, request)
-    if result:
-        return True, int(re.compile(ADD_BASKET_PATTERN).search(request).group(1))
-    else:
-        return False, -1
+def is_add_request(request: str) -> bool:
+    return request.startswith("/addbasket")
+
+
+def get_id_from_add_request(request: str) -> str:
+    return re.compile(ADD_BASKET_PATTERN).search(request).group(1)
 
 
 def is_order_request(request: str) -> bool:
-    return bool(re.match(ORDER_PATTERN, request))
+    return request == "/order.phtml"
 
 
 def is_catalogue_request(request: str) -> bool:
-    return bool(re.match(CATALOG_PATTERN, request))
+    return request == "/catalog.phtml"
 
 
 def is_search_request(request: str) -> bool:
     return bool(re.match(SEARCH_PATTERN, request))
 
 
-def parse_timestamp(timestamp: str) -> Dict[str, Any]:
+def parse_timestamp(timestamp: str) -> pd.Timestamp:
     datetime_pattern: str = "%d/%b/%Y:%H:%M:%S"
     time_raw: str = timestamp.split(" ")[0]
     time: Datetime = Datetime.strptime(time_raw, datetime_pattern)
-    return {
-        DAY: time.day,
-        MONTH: time.month,
-        YEAR: time.year,
-        HOUR: time.hour,
-        DAY_OF_WEEK: time.weekday()
-    }
+    return pd.Timestamp(
+        year=time.year, month=time.month, day=time.day, hour=time.hour, minute=time.minute, second=time.second
+    )
 
 
 _geo = geolite2.reader()
 
 
-def get_county_by_ip(ip_address: str) -> str | float:
+def get_county_by_ip(ip_address: str) -> Any:
     try:
         x = _geo.get(ip_address)
     except ValueError:
