@@ -19,21 +19,21 @@ def check_hypotheses(dataframe: pd.DataFrame):
     )
     print("Гипотеза №13")
     print(
-        f"Средний объем продуктовой корзины покупателя равен: {hypothesis_13.main_13(dataframe, 'data'):.2f}"
+        f"Средний объем продуктовой корзины покупателя равен: {hypothesis_13.main_13(dataframe):.2f}"
     )
     print("Гипотеза №14")
     print(
-        f"Средний товарооборот за весь период равен: {hypothesis_14.main_14(dataframe, 'data'):.2f}"
+        f"Средний товарооборот за весь период равен: {hypothesis_14.main_14(dataframe):.2f}"
     )
     print("Гипотеза №16")
     print(
-        f"Среднее количество элементов в корзине клиента за весь период равно:{hypothesis_16.main_16(dataframe, 'data'):.2f}"
+        f"Среднее количество элементов в корзине клиента за весь период равно:{hypothesis_16.main_16(dataframe):.2f}"
     )
     print("Гипотеза №17")
     print(
-        f"Среднее время браузинга товаров на сайте за весь период равно:{hypothesis_17.main_17(dataframe, 'data'):.2f}"
+        f"Среднее время браузинга товаров на сайте за весь период равно:{hypothesis_17.main_17(dataframe):.2f}"
     )
     print("Гипотеза №21")
     print(
-        f"Среднее количество переходов от одного пользователя за весь период равно:{hypothesis_21.main_21(dataframe, 'data'):.2f}"
+        f"Среднее количество переходов от одного пользователя за весь период равно:{hypothesis_21.main_21(dataframe):.2f}"
     )

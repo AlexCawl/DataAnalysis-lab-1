@@ -1,9 +1,10 @@
-from typing import Tuple, Callable
+from typing import Callable
 
 import pandas as pd
 
+from core.lab_1.util.constants import USER, ENDPOINT
+from core.lab_1.util.extensions import is_catalogue_request, is_search_request, is_add_request
 from core.util.benchmarking.measuring import measure_execution_time
-from core.lab_1.util.extensions import is_catalogue_request, is_search_request
 
 
 # №19 Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
@@ -19,10 +20,10 @@ def main_19(dataframe: pd.DataFrame) -> str:
         for i in range(log_index, -1, -1):
             log: pd.Series = _dataframe.loc[i]
             if str(log[USER]) == user:
-                endpoint: str = str(log[ENDPOINT])
-                if is_catalogue_request(endpoint):
+                _request: str = str(log[ENDPOINT])
+                if is_catalogue_request(_request):
                     return 0
-                elif is_search_request(endpoint):
+                elif is_search_request(_request):
                     return 1
         return -1
 
@@ -32,9 +33,9 @@ def main_19(dataframe: pd.DataFrame) -> str:
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
-        url: str = str(row[ENDPOINT])
+        request: str = str(row[ENDPOINT])
 
-        if url.startswith(ADD_BASKET):
+        if is_add_request(request):
             last_request: int = user_last_request(dataframe, index, user_id)
             if last_request == 0:
                 catalog_count += 1

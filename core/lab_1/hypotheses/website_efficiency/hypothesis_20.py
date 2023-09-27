@@ -2,8 +2,8 @@ from typing import Dict, Set, Tuple
 
 import pandas as pd
 
-from core.util.benchmarking.measuring import measure_execution_time
 from core.lab_1.util.extensions import get_users_baskets
+from core.util.benchmarking.measuring import measure_execution_time
 
 
 @measure_execution_time

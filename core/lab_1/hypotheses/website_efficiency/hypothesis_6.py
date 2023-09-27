@@ -1,7 +1,8 @@
-from typing import Tuple, Callable
+from typing import Callable
 
 import pandas as pd
 
+from core.lab_1.util.constants import ENDPOINT
 from core.util.benchmarking.measuring import measure_execution_time
 
 

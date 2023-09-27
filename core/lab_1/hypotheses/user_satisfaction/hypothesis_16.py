@@ -3,10 +3,12 @@ from typing import Dict, List
 import numpy as np
 import pandas as pd
 
-from core.util.benchmarking.measuring import measure_execution_time
+from core.lab_1.util.constants import DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, \
+    HOUR_OF_DAY, USER, ENDPOINT, DATA_OUTPUT_FOLDER
 from core.lab_1.util.extensions import is_add_request, get_id_from_add_request
-from core.util.plot.graphics import single_plot, multi_plot
 from core.lab_1.util.splitter import split_by_keys
+from core.util.benchmarking.measuring import measure_execution_time
+from core.util.plot.graphics import single_plot, multi_plot
 
 
 # №16
@@ -14,15 +16,15 @@ from core.lab_1.util.splitter import split_by_keys
 # Гипотеза: Среднее количество элементов в корзине клиента равно: ...
 
 @measure_execution_time
-def main_16(dataframe: pd.DataFrame, path: str) -> float:
+def main_16(dataframe: pd.DataFrame) -> float:
     keys: List[str] = [DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, HOUR_OF_DAY]
     data: Dict[str, Dict[str, float]] = dict()
     for key in keys:
         values: Dict[str, float] = split_by_keys(key, dataframe, lambda frame: _compute_16(frame))
         data.update({key: values})
-        single_plot(values, f"16-{key}", path)
+        single_plot(values, 16, key.lower(), DATA_OUTPUT_FOLDER)
 
-    multi_plot(list(data[DATE_DAY_PRECISION].values()), "16-all", path)
+    multi_plot(list(data[DATE_DAY_PRECISION].values()), 16, "all", DATA_OUTPUT_FOLDER)
     return _compute_16(dataframe)
 
 

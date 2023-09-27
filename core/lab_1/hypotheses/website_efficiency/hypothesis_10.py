@@ -1,7 +1,8 @@
-from typing import Tuple, Dict, List
+from typing import Dict, List
 
 import pandas as pd
 
+from core.lab_1.util.constants import ENDPOINT, USER
 from core.util.benchmarking.measuring import measure_execution_time
 
 
