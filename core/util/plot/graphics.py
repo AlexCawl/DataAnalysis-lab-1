@@ -3,11 +3,9 @@ from typing import Dict, List
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from core.util.benchmarking.measuring import measure_execution_time
 from core.util.file_processing.extensions import mk_dir_abs_from_local
 
 
-@measure_execution_time
 def single_plot(data: Dict[str, float], identifier: int, name: str, dir_name: str) -> None:
     plt.figure(figsize=(12, 8))
     graphic: object = sns.barplot(x=list(data.keys()), y=list(data.values()))
@@ -19,7 +17,6 @@ def single_plot(data: Dict[str, float], identifier: int, name: str, dir_name: st
     plt.clf()
 
 
-@measure_execution_time
 def multi_plot(data: List[float], identifier: int, name: str, dir_name: str) -> None:
     plt.figure(figsize=(12, 8))
     graphic: object = sns.histplot(data=data, kde=True)
