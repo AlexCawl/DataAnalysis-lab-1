@@ -21,8 +21,8 @@ def get_users_baskets(dataframe: pd.DataFrame) -> Dict[str, Set[str]]:
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        user_id: str = str(row[ID])
-        url: str = str(row[URL])
+        user_id: str = str(row[USER])
+        url: str = str(row[ENDPOINT])
         update_data(user_id, url)
 
     return result

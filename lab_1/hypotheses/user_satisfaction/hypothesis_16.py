@@ -1,4 +1,4 @@
-from typing import Tuple, Dict, Callable, List
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
@@ -27,7 +27,6 @@ def main_16(dataframe: pd.DataFrame, path: str) -> float:
     return _compute_16(dataframe)
 
 
-@measure_execution_time
 def _compute_16(dataframe: pd.DataFrame) -> float:
     users_items: Dict[str, List[str]] = dict()
 

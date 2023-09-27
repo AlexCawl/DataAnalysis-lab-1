@@ -1,5 +1,6 @@
 from typing import Dict, List
 
+import numpy as np
 import pandas as pd
 
 from lab_1.util.constants import *
@@ -10,7 +11,7 @@ from lab_1.util.splitter import split_by_keys
 
 # №12
 # Вопрос: Какова эффективность работы службы привлечения клиентов?
-# Гипотеза: Среднее число посетителей равно: ...
+# Гипотеза: Среднее число посетителей за день равно: ...
 
 
 @measure_execution_time
@@ -23,7 +24,7 @@ def main_12(dataframe: pd.DataFrame, path: str) -> float:
         single_plot(values, f"12-{key}", path)
 
     multi_plot(list(data[DATE_DAY_PRECISION].values()), "12-all", path)
-    return _compute_12(dataframe)
+    return np.array(list(data[DATE_DAY_PRECISION].values())).mean()
 
 
 def _compute_12(dataframe: pd.DataFrame) -> float:
