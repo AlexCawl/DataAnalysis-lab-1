@@ -1,5 +1,6 @@
 from typing import Dict, List
 
+import numpy as np
 import pandas as pd
 
 from core.util.benchmarking.measuring import measure_execution_time

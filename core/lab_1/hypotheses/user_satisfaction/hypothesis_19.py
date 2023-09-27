@@ -10,7 +10,7 @@ from core.lab_1.util.extensions import is_catalogue_request, is_search_request
 # Гипотеза: при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ
 
 @measure_execution_time
-def compute_19(dataframe: pd.DataFrame) -> Tuple[str, str]:
+def main_19(dataframe: pd.DataFrame) -> str:
     h0: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ"
     h1: str = "При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется ПОИСКОМ, нежели КАТАЛОГОМ"
     condition: Callable[[int], bool] = lambda c, s: c > s
@@ -31,8 +31,8 @@ def compute_19(dataframe: pd.DataFrame) -> Tuple[str, str]:
 
     for index in range(len(dataframe)):
         row: pd.Series = dataframe.loc[index]
-        user_id: str = str(row[ID])
-        url: str = str(row[URL])
+        user_id: str = str(row[USER])
+        url: str = str(row[ENDPOINT])
 
         if url.startswith(ADD_BASKET):
             last_request: int = user_last_request(dataframe, index, user_id)
@@ -41,7 +41,4 @@ def compute_19(dataframe: pd.DataFrame) -> Tuple[str, str]:
             elif last_request == 1:
                 search_count += 1
 
-    return (
-        h0 if condition(catalog_count, search_count) else h1,
-        f"catalog_count={catalog_count}; search_count={search_count}"
-    )
+    return h0 if condition(catalog_count, search_count) else h1
