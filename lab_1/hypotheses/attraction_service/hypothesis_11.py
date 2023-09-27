@@ -1,5 +1,6 @@
 from typing import List, Set, Dict
 
+import numpy as np
 import pandas as pd
 
 from lab_1.util.constants import *
@@ -23,7 +24,7 @@ def main_11(dataframe: pd.DataFrame, path: str) -> float:
         single_plot(values, f"11-{key}", path)
 
     multi_plot(list(data[DATE_DAY_PRECISION].values()), "11-all", path)
-    return _compute_11(dataframe)
+    return np.array(list(data[DATE_DAY_PRECISION].values())).mean()
 
 
 def _compute_11(dataframe: pd.DataFrame) -> float:

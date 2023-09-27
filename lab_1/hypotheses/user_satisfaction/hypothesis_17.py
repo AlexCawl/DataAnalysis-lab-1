@@ -35,15 +35,15 @@ def _compute_17(dataframe: pd.DataFrame) -> float:
         row: pd.Series = dataframe.loc[index]
         user_id: str = str(row[USER])
         if users.get(user_id) is None:
-            users.update({user_id: [row[DATETIME]]})
+            users.update({user_id: [row[TIMESTAMP]]})
             users_count += 1
         else:
             list_to_update: List[pd.Timestamp] = users[user_id]
             if len(users[user_id]) == 1:
-                list_to_update.append(row[DATETIME])
+                list_to_update.append(row[TIMESTAMP])
                 users.update({user_id: list_to_update})
             else:
-                list_to_update[1] = row[DATETIME]
+                list_to_update[1] = row[TIMESTAMP]
                 users.update({user_id: list_to_update})
 
     total_difference: float = 0
