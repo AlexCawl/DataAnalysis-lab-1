@@ -12,7 +12,7 @@ from core.util.plot.graphics import single_plot, multi_plot
 
 # №11
 # Вопрос: Какова эффективность работы службы привлечения клиентов?
-# Гипотеза: Коэффициент становление клиентом из посетителя равен: ...
+# Гипотеза: Коэффициент становление клиентом из посетителя за весь период равен: ...
 
 @measure_execution_time
 def main_11(dataframe: pd.DataFrame) -> float:

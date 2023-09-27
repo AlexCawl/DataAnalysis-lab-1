@@ -12,7 +12,7 @@ from core.util.plot.graphics import single_plot, multi_plot
 
 # №14
 # Вопрос: Какова эффективность работы службы отгрузок товаров?
-# Гипотеза: Средний товарооборот за весь период равен: ...
+# Гипотеза: Товарооборот за весь период равен: ...
 
 @measure_execution_time
 def main_14(dataframe: pd.DataFrame) -> float:

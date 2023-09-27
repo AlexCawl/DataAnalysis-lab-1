@@ -8,7 +8,7 @@ from core.util.benchmarking.measuring import measure_execution_time
 
 
 # №19 Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
-# Гипотеза: при формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ
+# Гипотеза: При формировании своей продуктовой корзины, покупатель с большей степенью воспользуется КАТАЛОГОМ, нежели ПОИСКОМ
 
 @measure_execution_time
 def main_19(dataframe: pd.DataFrame) -> str:
@@ -41,5 +41,4 @@ def main_19(dataframe: pd.DataFrame) -> str:
                 catalog_count += 1
             elif last_request == 1:
                 search_count += 1
-
     return h0 if condition(catalog_count, search_count) else h1

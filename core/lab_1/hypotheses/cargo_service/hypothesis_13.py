@@ -13,7 +13,7 @@ from core.util.plot.graphics import single_plot, multi_plot
 
 # №13
 # Вопрос: Какова эффективность работы службы отгрузок товаров?
-# Гипотеза: Средний объем продуктовой корзины покупателя равен: ...
+# Гипотеза: Средний объем продуктовой корзины покупателя за весь период равен: ...
 
 @measure_execution_time
 def main_13(dataframe: pd.DataFrame) -> float:

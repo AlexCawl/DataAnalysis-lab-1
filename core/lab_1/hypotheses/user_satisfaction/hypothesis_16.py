@@ -13,7 +13,7 @@ from core.util.plot.graphics import single_plot, multi_plot
 
 # №16
 # Вопрос: Какова удовлетворенность клиентов от взаимодействия с сайтом?
-# Гипотеза: Среднее количество элементов в корзине клиента равно: ...
+# Гипотеза: Среднее количество элементов в корзине клиента за весь период равно: ...
 
 @measure_execution_time
 def main_16(dataframe: pd.DataFrame) -> float:
