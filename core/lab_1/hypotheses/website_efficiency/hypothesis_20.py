@@ -1,13 +1,15 @@
-from typing import Dict, Set, Tuple
+from typing import Dict, Set, Tuple, List
 
 import pandas as pd
 
+from core.lab_1.util.constants import DATA_OUTPUT_FOLDER
 from core.lab_1.util.extensions import get_users_baskets
 from core.util.benchmarking.measuring import measure_execution_time
+from core.util.plot.graphics import graph_plot
 
 
 @measure_execution_time
-def clusterize(dataframe: pd.DataFrame) -> Dict[str, Tuple[str, int]]:
+def clusterize(dataframe: pd.DataFrame) -> List[Tuple[str, str, int]]:
     users_baskets: Dict[str, Set[str]] = get_users_baskets(dataframe)
     cluster: Dict[str, Dict[str, int]] = dict()
     result: Dict[str, Tuple[str, int]] = dict()
@@ -28,4 +30,7 @@ def clusterize(dataframe: pd.DataFrame) -> Dict[str, Tuple[str, int]]:
     for key, value in cluster.items():
         subitem: Tuple[str, int] = max(value.items(), key=lambda k: k[1])
         result.update({key: subitem})
-    return result
+    graph_data: List[Tuple[str, str, int]] = [(k, v[0], v[1]) for k, v in result.items()]
+    graph_data = list(filter(lambda t: t[2] > 20, graph_data))
+    graph_plot(graph_data, 20, "associations", DATA_OUTPUT_FOLDER)
+    return graph_data

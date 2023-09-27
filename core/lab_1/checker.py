@@ -4,6 +4,7 @@ from core.lab_1.hypotheses.attraction_service import hypothesis_11, hypothesis_1
 from core.lab_1.hypotheses.cargo_service import hypothesis_13, hypothesis_14
 from core.lab_1.hypotheses.user_satisfaction import hypothesis_16
 from core.lab_1.hypotheses.user_satisfaction import hypothesis_21, hypothesis_17
+from core.lab_1.hypotheses.website_efficiency import hypothesis_6, hypothesis_10, hypothesis_20
 from core.util.benchmarking.measuring import measure_execution_time
 
 
@@ -36,4 +37,16 @@ def check_hypotheses(dataframe: pd.DataFrame):
     print("Гипотеза №21")
     print(
         f"Среднее количество переходов от одного пользователя за весь период равно: {hypothesis_21.main_21(dataframe):.2f}"
+    )
+    print("Гипотеза №6")
+    print(
+        hypothesis_6.main_6(dataframe)
+    )
+    print("Гипотеза №10")
+    print(
+        f"Последний запрос пользователя за сессию является ORDER, а не любой другой с вероятностью: {hypothesis_10.main_10(dataframe):.2f}"
+    )
+    print("Гипотеза №20")
+    print(
+        f"Граф ассоциаций сгенерирован!\n{hypothesis_20.clusterize(dataframe)}"
     )
