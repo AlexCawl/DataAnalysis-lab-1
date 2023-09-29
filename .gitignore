@@ -1,4 +1,3 @@
 /venv/
-data/
-/core/lab_1/data_in/
-/core/lab_1/data_out/
+/data-out/
+/data-in/
