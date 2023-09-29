@@ -22,8 +22,3 @@ DATE_MONTH_PRECISION: str = "DATE_MONTH_PRECISION"
 HOUR_OF_DAY: str = "HOUR_OF_DAY"
 DAY_OF_WEEK: str = "DAY_OF_WEEK"
 ENDPOINT: str = "ENDPOINT"
-
-# configuration fields
-DATA_OUTPUT_FOLDER: str = "data-out"
-LOG_RAW_FILE = "access.log"
-LOG_CSV_FILE = "logs.csv"

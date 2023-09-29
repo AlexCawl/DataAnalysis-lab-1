@@ -3,8 +3,7 @@ from typing import Dict, List
 import numpy as np
 import pandas as pd
 
-from labs.lab_1.util.constants import DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, \
-    HOUR_OF_DAY, USER, DATA_OUTPUT_FOLDER, TIMESTAMP
+from labs.lab_1.util.constants import DATE_DAY_PRECISION, DATE_WEEK_PRECISION, DAY_OF_WEEK, HOUR_OF_DAY, USER, TIMESTAMP
 from labs.lab_1.util.splitter import split_by_keys
 from labs.util.benchmarking.measuring import measure_execution_time
 from labs.util.plot.graphics import single_plot, multi_plot
@@ -21,9 +20,9 @@ def main_17(dataframe: pd.DataFrame) -> float:
     for key in keys:
         values: Dict[str, float] = split_by_keys(key, dataframe, lambda frame: _compute_17(frame))
         data.update({key: values})
-        single_plot(values, 17, key.lower(), DATA_OUTPUT_FOLDER)
+        single_plot(values, 17, key.lower())
 
-    multi_plot(list(data[DATE_DAY_PRECISION].values()), 17, "all", DATA_OUTPUT_FOLDER)
+    multi_plot(list(data[DATE_DAY_PRECISION].values()), 17, "all")
     return _compute_17(dataframe)
 
 

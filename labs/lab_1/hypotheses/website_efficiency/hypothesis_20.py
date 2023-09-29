@@ -2,7 +2,6 @@ from typing import Dict, Set, Tuple, List
 
 import pandas as pd
 
-from labs.lab_1.util.constants import DATA_OUTPUT_FOLDER
 from labs.lab_1.util.extensions import get_users_baskets
 from labs.util.benchmarking.measuring import measure_execution_time
 from labs.util.plot.graphics import graph_plot
@@ -32,5 +31,5 @@ def clusterize(dataframe: pd.DataFrame) -> List[Tuple[str, str, int]]:
         result.update({key: subitem})
     graph_data: List[Tuple[str, str, int]] = [(k, v[0], v[1]) for k, v in result.items()]
     graph_data = list(filter(lambda t: t[2] > 20, graph_data))
-    graph_plot(graph_data, 20, "associations", DATA_OUTPUT_FOLDER)
+    graph_plot(graph_data, 20, "associations")
     return graph_data
