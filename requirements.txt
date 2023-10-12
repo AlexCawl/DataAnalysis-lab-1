@@ -6,3 +6,4 @@ matplotlib
 maxminddb-geolite2
 seaborn
 networkx
+jupyter

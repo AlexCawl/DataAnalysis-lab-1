@@ -7,4 +7,4 @@ LOG_RAW_FILE = "access.log"
 LOG_CSV_FILE = "logs.csv"
 
 # lab-2 configuration
-DATA_CSV_FILE = "phishingData.csv"
+FISHING_CSV_FILE = "phishingData.csv"
