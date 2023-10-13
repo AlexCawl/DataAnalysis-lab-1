@@ -14,5 +14,5 @@ class ClassificationModelApi(ABC):
         ...
 
     @abstractmethod
-    def test(self, x_test_val: pd.DataFrame, y_test_val: pd.DataFrame) -> str:
+    def test(self, x_test_val: pd.DataFrame, y_test_val: pd.DataFrame, path: str) -> None:
         ...

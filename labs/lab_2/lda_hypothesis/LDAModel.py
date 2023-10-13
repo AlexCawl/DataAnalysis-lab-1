@@ -1,13 +1,15 @@
-from typing import Any, Optional, Dict
+from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.metrics import accuracy_score, classification_report
-from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score, GridSearchCV
+from sklearn.metrics import accuracy_score, classification_report, ConfusionMatrixDisplay
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import RepeatedStratifiedKFold, GridSearchCV
 
 from labs.lab_2.util.ClassificationModelApi import ClassificationModelApi
+from labs.lab_2.util.constants import CLASSES
 
 
 class LDAModel(ClassificationModelApi):
@@ -43,11 +45,16 @@ class LDAModel(ClassificationModelApi):
                                      n_jobs=-1)
         self.__results = self.__search.fit(x, y)
 
-    def test(self, x: pd.DataFrame, y: pd.DataFrame) -> None:
+    def test(self, x: pd.DataFrame, y: pd.DataFrame, path: str) -> None:
         if self.__is_trained:
             prediction = self.__search.best_estimator_.predict(x)
             self.__score = accuracy_score(y, prediction)
             self.__matrix = confusion_matrix(y, prediction)
             self.__report = classification_report(y, prediction)
+
+            plt.figure(figsize=(15, 15))
+            ConfusionMatrixDisplay.from_estimator(self.__search.best_estimator_, x, y, display_labels=CLASSES)
+            plt.savefig(f"{path}/{self.__class__.__name__}-matrix.png")
+            plt.clf()
         else:
             raise Exception("Not trained already!")
