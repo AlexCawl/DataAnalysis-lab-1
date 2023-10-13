@@ -26,7 +26,7 @@ class LDAModel(ClassificationModelApi):
     def __init__(self) -> None:
         self.__is_trained = False
         self.__grid = {
-            "solver": ["lsqr", "eigen"],
+            "solver": ["eigen"],
             "shrinkage": np.arange(0, 1, 0.01)
         }
         self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
@@ -55,6 +55,16 @@ class LDAModel(ClassificationModelApi):
             plt.figure(figsize=(15, 15))
             ConfusionMatrixDisplay.from_estimator(self.__search.best_estimator_, x, y, display_labels=CLASSES)
             plt.savefig(f"{path}/{self.__class__.__name__}-matrix.png")
+            plt.clf()
+
+            plt.figure(figsize=(15, 15))
+            x_transformed = self.__search.transform(x)
+            colors = ['red', 'green', 'blue']
+            for color, i, target_name in zip(colors, [-1, 0, 1], CLASSES):
+                plt.scatter(x_transformed[y == i, 0], x_transformed[y == i, 1], alpha=.8, color=color,
+                            label=target_name)
+            plt.legend(loc='best', shadow=False, scatterpoints=1)
+            plt.savefig(f"{path}/{self.__class__.__name__}-result.png")
             plt.clf()
         else:
             raise Exception("Not trained already!")
