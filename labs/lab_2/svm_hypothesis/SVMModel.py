@@ -1,23 +1,23 @@
 from typing import Any, Dict
 
-import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import accuracy_score, classification_report, ConfusionMatrixDisplay
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import RepeatedStratifiedKFold, GridSearchCV
+from sklearn.svm import SVC
 
 from labs.lab_2.util.ClassificationModelApi import ClassificationModelApi
 from labs.lab_2.util.constants import CLASSES
 
 
-class LDAModel(ClassificationModelApi):
+class SVMModel(ClassificationModelApi):
     __is_trained: bool
     __grid: Dict[str, Any]
-    __cv: RepeatedStratifiedKFold
     __search: GridSearchCV
     __results: LinearDiscriminantAnalysis
+    __cv: RepeatedStratifiedKFold
 
     __score: float
     __matrix: Any
@@ -26,9 +26,11 @@ class LDAModel(ClassificationModelApi):
     def __init__(self) -> None:
         self.__is_trained = False
         self.__grid = {
-            "solver": ["eigen"],
-            "shrinkage": np.arange(0, 1, 0.01)
+            'C': [0.1, 1, 10, 100, 1000],
+            'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+            'kernel': ['rbf']
         }
+
         self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
 
     def get_info(self) -> str:
@@ -41,8 +43,7 @@ class LDAModel(ClassificationModelApi):
 
     def train(self, x: pd.DataFrame, y: pd.DataFrame) -> None:
         self.__is_trained = True
-        self.__search = GridSearchCV(LinearDiscriminantAnalysis(), self.__grid, refit=True, scoring="accuracy", cv=self.__cv,
-                                     n_jobs=-1)
+        self.__search = GridSearchCV(SVC(), self.__grid, scoring="accuracy", refit=True, cv=self.__cv)
         self.__results = self.__search.fit(x, y)
 
     def test(self, x: pd.DataFrame, y: pd.DataFrame, path: str) -> None:
@@ -55,16 +56,6 @@ class LDAModel(ClassificationModelApi):
             plt.figure(figsize=(15, 15))
             ConfusionMatrixDisplay.from_estimator(self.__search.best_estimator_, x, y, display_labels=CLASSES)
             plt.savefig(f"{path}/{self.__class__.__name__}-matrix.png")
-            plt.clf()
-
-            plt.figure(figsize=(15, 15))
-            x_transformed = self.__search.transform(x)
-            colors = ['red', 'green', 'blue']
-            for color, i, target_name in zip(colors, [-1, 0, 1], CLASSES):
-                plt.scatter(x_transformed[y == i, 0], x_transformed[y == i, 1], alpha=.8, color=color,
-                            label=target_name)
-            plt.legend(loc='best', shadow=False, scatterpoints=1)
-            plt.savefig(f"{path}/{self.__class__.__name__}-result.png")
             plt.clf()
         else:
             raise Exception("Not trained already!")
