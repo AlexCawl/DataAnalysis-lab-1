@@ -1,6 +1,6 @@
 import pandas as pd
 
-from labs.lab_2.lda_hypothesis.LDAModel import LDAModel
+from labs.lab_2.lda_hypothesis.LDAModel import LDAModelEigen, LDAModelSVD
 from labs.lab_2.svm_hypothesis.SVMModel import SVMModel
 from labs.lab_2.util.constants import RESULT
 from labs.lab_2.util.pandas_util import split_dataframe_into_samples
@@ -18,7 +18,7 @@ def check_hypotheses(dataframe: pd.DataFrame):
 
     output_path = mk_dir_abs_from_local(f"{DATA_OUTPUT_FOLDER}/lab2")
 
-    models = [LDAModel, SVMModel]
+    models = [LDAModelEigen, LDAModelSVD, SVMModel]
     for model in models:
         model = model()
         model.train(X_VAL_TRAIN_SAMPLE, Y_VAL_TRAIN_SAMPLE)
