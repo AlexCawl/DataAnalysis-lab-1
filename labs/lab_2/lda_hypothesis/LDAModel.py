@@ -19,7 +19,7 @@ CROSS_VALIDATOR: Any = RepeatedStratifiedKFold(n_splits=10, n_repeats=50, random
 class LDAModelEigen(ClassificationModelApi):
     # Configuration params [CLASS ATTRIBUTE]
     grid: Dict[str, Any] = {
-        "solver": [SOLVERS[2]],
+        "solver": [SOLVERS[1]],
         "shrinkage": SHRINKAGE[2]
     }
     cross_validator: Any = CROSS_VALIDATOR
