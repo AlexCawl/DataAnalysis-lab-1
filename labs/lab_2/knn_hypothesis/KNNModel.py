@@ -20,7 +20,7 @@ class KNNModel(ClassificationModelApi):
     __is_trained: bool
     __grid: Dict[str, Any]
     __search: GridSearchCV
-    __results: LinearDiscriminantAnalysis
+    __results: KNeighborsClassifier
     __cv: RepeatedStratifiedKFold
 
     __score: float
@@ -71,7 +71,6 @@ class KNNModel(ClassificationModelApi):
             # h = 0.02
             # cmap_light = ListedColormap(['orange', 'cyan', 'cornflowerblue'])
             # cmap_bold = ListedColormap(['darkorange', 'c', 'darkblue'])
-
             # x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
             # y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
             # xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))

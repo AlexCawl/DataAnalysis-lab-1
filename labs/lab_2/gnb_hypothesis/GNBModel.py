@@ -17,7 +17,7 @@ class GNBModel(ClassificationModelApi):
     __is_trained: bool
     __grid: Dict[str, Any]
     __search: GridSearchCV
-    __results: LinearDiscriminantAnalysis
+    __results: GaussianNB
     __cv: RepeatedStratifiedKFold
 
     __score: float
