@@ -1,6 +1,7 @@
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold
 import pandas as pd
 import matplotlib.pyplot as plt
+from imblearn.over_sampling import SMOTE
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
@@ -20,14 +21,29 @@ def decision_tree_clf():
 
     X_train, X_test, y_train, y_test = train_test_split(feature_df,
                                                         target_df,
-                                                        test_size=0.30,
-                                                        random_state=12)
+                                                        test_size=0.25,
+                                                        random_state=2023)
+    print('Размерность набора данных X_train: ', X_train.shape)
+    print('Размерность набора данных Y_train: ', y_train.shape)
+    print('Размерность набора данных X_test: ', X_test.shape)
+    print('Размерность набора данных Y_test: ', y_test.shape)
 
-    tree_param = [{'criterion': ['entropy', 'gini'], 'max_depth': [i for i in range(1, 20)],
-                   'min_samples_leaf': [i for i in range(1, 25)],
-                   'max_leaf_nodes': [i for i in range(2, 20)]}]
+    print('Перед применением метода кол-во меток со значением -1: {}'.format(sum(y_train == -1)))
+    print('Перед применением метода кол-во меток со значением 0: {}'.format(sum(y_train == 0)))
+    print('Перед применением метода кол-во меток со значением 1: {}'.format(sum(y_train == 1)))
 
-    dtc_model = GridSearchCV(DecisionTreeClassifier(), tree_param, cv=10)
+    smote = SMOTE(random_state=2023)
+    X_train, y_train = smote.fit_resample(X_train, y_train)
+
+    print('После применением метода кол-во меток со значением -1: {}'.format(sum(y_train == -1)))
+    print('После применением метода кол-во меток со значением 0: {}'.format(sum(y_train == 0)))
+    print('После применением метода кол-во меток со значением 1: {}'.format(sum(y_train == 1)))
+
+    tree_param = [{'criterion': ['entropy', 'gini'], 'max_depth': [i for i in range(1, 14)],
+                   'min_samples_leaf': [i for i in range(2, 16, 2)],
+                   'max_leaf_nodes': [i for i in range(2, 50, 2)]}]
+
+    dtc_model = GridSearchCV(DecisionTreeClassifier(), tree_param, cv=12)
     dtc_model.fit(X=X_train.values, y=y_train)
 
     prediction = dtc_model.best_estimator_.predict(X_test)
