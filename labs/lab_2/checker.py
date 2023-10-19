@@ -21,8 +21,12 @@ def check_hypotheses(dataframe: pd.DataFrame):
     output_path = mk_dir_abs_from_local(f"{DATA_OUTPUT_FOLDER}/lab2")
     models = [LDAModel, SVMModel, KNNModel, GNBModel]
     for model in models:
-        model = model()
-        model.train(X_VAL_TRAIN_SAMPLE, Y_VAL_TRAIN_SAMPLE)
-        model.test(X_VAL_TEST_SAMPLE, Y_VAL_TEST_SAMPLE, output_path)
-        print(model.get_info())
+        @measure_execution_time
+        def check_model(model):
+            model = model()
+            model.train(X_VAL_TRAIN_SAMPLE, Y_VAL_TRAIN_SAMPLE)
+            model.test(X_VAL_TEST_SAMPLE, Y_VAL_TEST_SAMPLE, output_path)
+            print(model.get_info())
+
+        check_model(model)
 
