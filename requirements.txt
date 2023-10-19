@@ -7,3 +7,4 @@ maxminddb-geolite2
 seaborn
 networkx
 jupyter
+imblearn
