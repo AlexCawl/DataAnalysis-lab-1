@@ -45,7 +45,7 @@ class LDAModel(ClassificationModelApi):
                                      n_jobs=-1)
         self.__results = self.__search.fit(x, y)
 
-    def test(self, x: pd.DataFrame, y: pd.DataFrame, path: str) -> None:
+    def test(self, x: pd.DataFrame, y: pd.DataFrame, path: str, balance: bool = False) -> None:
         if self.__is_trained:
             prediction = self.__search.best_estimator_.predict(x)
             self.__score = accuracy_score(y, prediction)
@@ -54,7 +54,8 @@ class LDAModel(ClassificationModelApi):
 
             plt.figure(figsize=(15, 15))
             ConfusionMatrixDisplay.from_estimator(self.__search.best_estimator_, x, y, display_labels=CLASSES)
-            plt.savefig(f"{path}/{self.__class__.__name__}-matrix.png")
+            balance_prefix = "-balance-" if balance else ""
+            plt.savefig(f"{path}/{self.__class__.__name__}{balance_prefix}-matrix.png")
             plt.clf()
 
             plt.figure(figsize=(15, 15))
