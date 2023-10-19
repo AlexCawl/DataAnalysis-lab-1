@@ -14,4 +14,4 @@ def main():
     """
     DATAFRAME_PATH: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/{FISHING_CSV_FILE}"
     dataframe: pd.DataFrame = load_from_csv(path=DATAFRAME_PATH, delimiter=",")
-    check_hypotheses(dataframe)
+    check_hypotheses(dataframe, True)
