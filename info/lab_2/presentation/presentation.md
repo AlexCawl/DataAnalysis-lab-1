@@ -38,13 +38,13 @@ marp: true
 ---
 
 <img src="../../../data-out/lab2/LDAModel-matrix.png" align=left width= 800>
-<h2 align=right>Matrix for LDA model<h2>
+<h2 align=right>Matrix for LDA model</h2>
 
 
 ---
 
 <img src="../../../data-out/lab2/LDAModel-result.png" align=left width= 900 height = 600>
-<h2 align=right>LDA visualisation<h2>
+<h2 align=right>LDA visualisation</h2>
 
 ---
 # выводы модели
@@ -62,7 +62,7 @@ marp: true
 
 ---
 <img src="../../../data-out/lab2/GNBModel-matrix.png" align=left width= 800>
-<h2 align=right>Matrix for GNB model<h2>
+<h2 align=right>Matrix for GNB model</h2>
 
 ---
 
@@ -88,7 +88,7 @@ marp: true
 
 ---
 <img src="../../../data-out/lab2/DTModel-dtree.png" align=left width= 900 height = 600>
-<h2 align=right>Desision Tree visualisation<h2>
+<h2 align=right>Desision Tree visualisation</h2>
 
 ---
 # выводы модели
@@ -105,7 +105,7 @@ marp: true
 ---
 
 <img src="../../../data-out/lab2/KNNModel-matrix.png" align=left width= 800>
-<h2 align=right>Matrix for KNN model<h2>
+<h2 align=right>Matrix for KNN model</h2>
 
 
 ---
@@ -129,7 +129,7 @@ marp: true
 ---
 
 <img src="../../../data-out/lab2/SVMModel-balance--matrix.png" align=left width= 800>
-<h2 align=right>Matrix for SVC model<h2>
+<h2 align=right>Matrix for SVC model</h2>
 
 ---
 
