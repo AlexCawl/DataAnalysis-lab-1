@@ -24,28 +24,22 @@ class DTRModel(RegressionModelApi):
         self._MSE = None
         self._MAE = None
         self.__is_trained = False
-        self.__grid = {'criterion': ['friedman_mse'],
-                       'max_depth': [i for i in range(5, 20, 2)],
-                       'max_leaf_nodes': [i for i in range(20, 60, 10)],
-                       'min_samples_split': [i for i in range(20, 80, 10)]}
-        # self.__grid = {'criterion': ['friedman_mse'],
-        #                'max_depth': [10],
-        #                'max_leaf_nodes': [40],
-        #                'min_samples_split': [70]}
-
-        self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=1)
+        self.__grid = {'criterion': ['friedman_mse', 'squared_error'],
+                       'max_depth': [i for i in range(5, 15, 5)],
+                       'max_leaf_nodes': [i for i in range(30, 60, 10)],
+                       'min_samples_split': [i for i in range(50, 80, 10)]}
 
     def get_info(self) -> str:
         return f"<<<   {self.__class__.__name__}   >>>\n" + \
-            f"R-Squared trained: {round(self.__results.best_score_ * 100, 2)}%\n" + \
-            f"MAE Tested: {self._MAE}%\n" + \
-            f"MSE Tested: {self._MSE}%\n" + \
-            f"RMSE Tested: {self._RMSE}%\n" + \
+            f"R-Squared trained: {self.__results.best_score_}\n" + \
+            f"MAE Tested: {self._MAE}\n" + \
+            f"MSE Tested: {self._MSE}\n" + \
+            f"RMSE Tested: {self._RMSE}\n" + \
             f"Configuration: {self.__results.best_params_}\n"
 
     def train(self, x_train: pd.DataFrame, y_train: pd.DataFrame) -> None:
         self.__is_trained = True
-        self.__search = GridSearchCV(DecisionTreeRegressor(), self.__grid, cv=6)
+        self.__search = GridSearchCV(DecisionTreeRegressor(), self.__grid, cv=7)
         self.__results = self.__search.fit(X=x_train, y=y_train)
 
     def test(self, x_test: pd.DataFrame, y_test: pd.DataFrame, path: str = "") -> None:
