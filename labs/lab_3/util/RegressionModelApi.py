@@ -1,11 +1,12 @@
 from abc import abstractmethod
+from typing import Dict
 
 import pandas as pd
 
 
 class RegressionModelApi:
     @abstractmethod
-    def get_info(self) -> str:
+    def get_info(self) -> Dict[str, str]:
         ...
 
     @abstractmethod

@@ -9,6 +9,6 @@ def main() -> None:
     """
     Run this only from lab3_classifications.py from content root dir.
     """
-    train_path: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/{TRAIN_DATASET_FOLDER}"
-    test_path: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/{TEST_DATASET_FOLDER}"
+    train_path: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/lab_3/{TRAIN_DATASET_FOLDER}"
+    test_path: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/lab_3/{TEST_DATASET_FOLDER}"
     check_hypotheses(train_path, test_path)
