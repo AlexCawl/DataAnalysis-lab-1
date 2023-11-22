@@ -1,56 +1,44 @@
-import glob
-from typing import Callable, Any, Tuple
+from typing import Dict, List
 
 import pandas as pd
 
-from labs.lab_3.decision_tree_regression.DecisionTreeRegressionModel import DTRModel
+from labs.lab_3.linear_regression.LinearRegressionModel import LinearRegressionModel
+from labs.lab_3.util.RegressionModelApi import RegressionModelApi
+from labs.lab_3.util.constants import TRAIN_FILES, TEST_FILES
+from labs.lab_3.util.loader import load_atomic_dataframe
 from labs.util.benchmarking.measuring import measure_execution_time
 from labs.util.file_processing.configuration import DATA_OUTPUT_FOLDER
 from labs.util.file_processing.extensions import mk_dir_abs_from_local
 
 
 @measure_execution_time
-def check_model(model: Callable[[], Any], feature_df_train, target_df_train, feature_df_test, target_df_test: pd.DataFrame,
-                output_path: str, balance: bool = None) -> None:
-
-    model = model()
-    model.train(feature_df_train, target_df_train)
-
-    if balance is not None:
-        model.test(feature_df_test, target_df_test, output_path, balance)
-    else:
-        model.test(feature_df_test, target_df_test, output_path)
-
-    print(model.get_info())
-
-
-def generate_df(train_path, test_path) -> Tuple:
-    train_files = glob.glob(train_path + "/*.csv")
-    test_files = glob.glob(test_path + "/*.csv")
-    temp_train_dfs, temp_test_dfs = [], []
-
-    for file in train_files:
-        temp_train_dfs.append(pd.read_csv(file))
-
-    for file in test_files:
-        temp_test_dfs.append(pd.read_csv(file))
-
-    train_df: pd.DataFrame = pd.concat(temp_train_dfs, ignore_index=True)
-    test_df: pd.DataFrame = pd.concat(temp_test_dfs, ignore_index=True)
-
-    target_df_train: pd.DataFrame = train_df['Target Variable']
-    feature_df_train: pd.DataFrame = train_df.drop(columns='Target Variable')
-
-    target_df_test: pd.DataFrame = test_df['Target Variable']
-    feature_df_test: pd.DataFrame = test_df.drop(columns='Target Variable')
-
-    return feature_df_train, target_df_train, feature_df_test, target_df_test
+def check_model(
+        model: RegressionModelApi,
+        *,
+        train_dataframe: pd.DataFrame,
+        train_target: pd.DataFrame,
+        test_dataframe: pd.DataFrame,
+        test_target: pd.DataFrame,
+        log_path: str = ""
+) -> None:
+    model.train(x_train=train_dataframe, y_train=train_target, path=log_path)
+    model.test(x_test=test_dataframe, y_test=test_target, path=log_path)
+    report: Dict[str, str] = model.get_info()
+    for key, value in report.items():
+        print(f"{key}: {value}")
 
 
 @measure_execution_time
-def check_hypotheses(train_path: str, test_path: str):
-    output_path = mk_dir_abs_from_local(f"{DATA_OUTPUT_FOLDER}/lab3")
-    models = [DTRModel]
-    feature_df_train, target_df_train, feature_df_test, target_df_test = generate_df(train_path, test_path)
-    for model in models:
-        check_model(model, feature_df_train, target_df_train, feature_df_test, target_df_test, output_path)
+def check_hypotheses(train_path: str, test_path: str, mode: str = "atomic"):
+    log_path = mk_dir_abs_from_local(f"{DATA_OUTPUT_FOLDER}/lab3")
+    # TODO place your models here
+    models: List[RegressionModelApi] = [LinearRegressionModel()]
+
+    if mode == "atomic":
+        atomic_dataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
+        for model in models:
+            check_model(
+                model=model,
+                train_dataframe=atomic_dataframe.train, train_target=atomic_dataframe.train_target,
+                test_dataframe=atomic_dataframe.test, test_target=atomic_dataframe.test_target,
+                log_path=log_path)

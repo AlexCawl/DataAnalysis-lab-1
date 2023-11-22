@@ -10,5 +10,5 @@ LOG_CSV_FILE: str = "logs.csv"
 FISHING_CSV_FILE: str = "phishingData.csv"
 
 # lab-3 configuration
-TRAIN_DATASET_FOLDER: str = "Training"
-TEST_DATASET_FOLDER: str = "Testing/TestSet"
+TRAIN_DATASET_FOLDER: str = "Dataset/Training"
+TEST_DATASET_FOLDER: str = "Dataset/Testing/TestSet"
