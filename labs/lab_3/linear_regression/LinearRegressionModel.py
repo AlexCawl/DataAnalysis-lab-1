@@ -103,8 +103,8 @@ class RidgeLinearRegressionModelModel(LinearRegressionModel):
     def __init__(self):
         super().__init__(
             params={
-                'alpha': [0.5, 1.0, 5.0],
-                'solver': ['auto', 'svd', 'lsqr']
+                'alpha': [1.0, 5.0, 25.0],
+                'solver': ['svd', 'cholesky', 'sparse_cg', 'saga']
             },
             estimator=Ridge()
         )
