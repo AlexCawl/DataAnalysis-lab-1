@@ -2,15 +2,17 @@ from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 from sklearn import metrics
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 
 from labs.lab_3.util.RegressionModelApi import RegressionModelApi
 from labs.util.benchmarking.measuring import measure_execution_time
+from labs.util.plot.graphics import test_graphics_plot
 
 
+# Base class for Linear Regression Models
+# Can (and should) be reused in your models
 class LinearRegressionModel(RegressionModelApi):
     # Model state [Trained - True, otherwise - False]
     __state: bool
@@ -22,20 +24,22 @@ class LinearRegressionModel(RegressionModelApi):
     __search: GridSearchCV
 
     # Cross-Validation (same for all models)
-    __cv: Any = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
+    __cv: RepeatedStratifiedKFold = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
 
     # Overall report (used to describe model state after training & testing)
     __report: Dict[str, str]
 
-    def __init__(self):
+    def __init__(self, params: Dict[str, Any], estimator: Any):
         # init state
         self.__state = False
         # init params
-        self.__params = {'fit_intercept': [True, False], 'copy_X': [True, False]}
-        # init GridSearchCV based on cross-validator and params
-        self.__search = GridSearchCV(estimator=LinearRegression(), param_grid=self.__params, cv=self.__cv, n_jobs=-1)
+        self.__params = params
+        # init cross-validator
+        self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
         # init logs
         self.__report = dict()
+        # init search
+        self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1)
 
     def get_info(self) -> Dict[str, str]:
         # validation
@@ -60,7 +64,7 @@ class LinearRegressionModel(RegressionModelApi):
         return report
 
     @measure_execution_time
-    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame, path: str = "") -> None:
+    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame) -> None:
         # change state
         self.__state = True
         # train model
@@ -80,19 +84,32 @@ class LinearRegressionModel(RegressionModelApi):
             }
         )
 
-        # clear pyplot
-        plt.clf()
+        # log graphics
+        test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-LRM")
 
-        # confusion matrix plot
-        plt.scatter(y_test, prediction)
-        plt.savefig(f"{path}/{self.__class__.__name__}-LRM1.png")
-        plt.clf()
 
-        # regression line plot
-        figure, axis = plt.subplots()
-        axis.scatter(y_test, y_test - prediction)
-        axis.axhline(lw=2, color='black')
-        axis.set_xlabel('Observed')
-        axis.set_ylabel('Residual')
-        plt.savefig(f"{path}/{self.__class__.__name__}-LRM2.png")
-        plt.clf()
+class LeastSquaresLinearRegressionModel(LinearRegressionModel):
+    def __init__(self):
+        super().__init__(
+            params={
+                'fit_intercept': [True, False],
+                'copy_X': [True, False]
+            },
+            estimator=LinearRegression()
+        )
+
+
+class RidgeLinearRegressionModelModel(LinearRegressionModel):
+    def __init__(self):
+        super().__init__(
+            params={
+                'alpha': [1.0, 5.0, 25.0],
+                'solver': ['svd', 'cholesky', 'sparse_cg', 'saga']
+            },
+            estimator=Ridge()
+        )
+# Lasso
+# The Lasso is a linear model that estimates sparse coefficients with l1 regularization.
+
+# ElasticNet
+# Elastic-Net is a linear regression model trained with both l1 and l2 -norm regularization of the coefficients.

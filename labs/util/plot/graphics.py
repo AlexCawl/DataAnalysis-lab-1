@@ -2,6 +2,7 @@ from typing import Dict, List, Tuple
 
 import matplotlib.pyplot as plt
 import networkx as nx
+import pandas as pd
 import seaborn as sns
 from networkx import DiGraph
 
@@ -43,4 +44,23 @@ def graph_plot(nodes: List[Tuple[str, str, int]], identifier: int, name: str,
     nx.draw_spring(graph, with_labels=True, **options)
     directory: str = mk_dir_abs_from_local(f"{dir_name}/{identifier}")
     plt.savefig(f"{directory}/{name.lower()}.png")
+    plt.clf()
+
+
+def test_graphics_plot(actual: pd.DataFrame, expected: pd.DataFrame, path: str, name: str):
+    # clear pyplot
+    plt.clf()
+
+    # confusion matrix plot
+    plt.scatter(actual, expected)
+    plt.savefig(f"{path}/{name}-1.png")
+    plt.clf()
+
+    # regression line plot
+    figure, axis = plt.subplots()
+    axis.scatter(actual, actual - expected)
+    axis.axhline(lw=2, color='black')
+    axis.set_xlabel('Observed')
+    axis.set_ylabel('Residual')
+    plt.savefig(f"{path}/{name}-2.png")
     plt.clf()

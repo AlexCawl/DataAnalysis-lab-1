@@ -23,8 +23,11 @@ def load_atomic_dataframe(
             dataframes.append(dataframe)
         return dataframes
 
+    # loading raw dataframes
     train_dataframes: List[pd.DataFrame] = load(path_train_dataframes, train_dataframes_names)
     test_dataframes: List[pd.DataFrame] = load(path_test_dataframes, test_dataframes_names)
+
+    # concatenating dataframes
     train_atomic_dataframe: pd.DataFrame = pd.concat(train_dataframes, ignore_index=True)
     test_atomic_dataframe: pd.DataFrame = pd.concat(test_dataframes, ignore_index=True)
 
