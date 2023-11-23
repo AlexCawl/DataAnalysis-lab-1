@@ -1,8 +1,11 @@
-from typing import Dict, List
+import datetime
+from typing import Dict, List, TextIO
 
 import pandas as pd
 
-from labs.lab_3.linear_regression.LinearRegressionModel import LinearRegressionModel
+from labs.lab_3.linear_regression.LinearRegressionModel import LeastSquaresLinearRegressionModel, \
+    RidgeLinearRegressionModelModel
+from labs.lab_3.util.AtomicDataframe import AtomicDataframe
 from labs.lab_3.util.RegressionModelApi import RegressionModelApi
 from labs.lab_3.util.constants import TRAIN_FILES, TEST_FILES
 from labs.lab_3.util.loader import load_atomic_dataframe
@@ -21,21 +24,29 @@ def check_model(
         test_target: pd.DataFrame,
         log_path: str = ""
 ) -> None:
-    model.train(x_train=train_dataframe, y_train=train_target, path=log_path)
+    model.train(x_train=train_dataframe, y_train=train_target)
     model.test(x_test=test_dataframe, y_test=test_target, path=log_path)
     report: Dict[str, str] = model.get_info()
+
+    file: TextIO = open(f"{log_path}/output.txt", "a")
+    file.write("\n")
     for key, value in report.items():
         print(f"{key}: {value}")
+        file.write(f"{key}: {value}" + "\n")
+    file.close()
 
 
 @measure_execution_time
 def check_hypotheses(train_path: str, test_path: str, mode: str = "atomic"):
     log_path = mk_dir_abs_from_local(f"{DATA_OUTPUT_FOLDER}/lab3")
+    file: TextIO = open(f"{log_path}/output.txt", "w")
+    file.write(f"LOG DATE: {datetime.datetime.now()}" + "\n")
+    file.close()
     # TODO place your models here
-    models: List[RegressionModelApi] = [LinearRegressionModel()]
+    models: List[RegressionModelApi] = [RidgeLinearRegressionModelModel()]
 
     if mode == "atomic":
-        atomic_dataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
+        atomic_dataframe: AtomicDataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
         for model in models:
             check_model(
                 model=model,

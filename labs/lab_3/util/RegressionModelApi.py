@@ -10,7 +10,7 @@ class RegressionModelApi:
         ...
 
     @abstractmethod
-    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame, path: str = "") -> None:
+    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame) -> None:
         ...
 
     @abstractmethod
