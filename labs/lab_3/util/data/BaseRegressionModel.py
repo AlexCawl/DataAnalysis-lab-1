@@ -61,7 +61,7 @@ class BaseRegressionModel(RegressionModelApi):
         # model params
         report.update(
             {
-                "model": "sklearn.linear_model.LinearRegression",
+                "model": f"{self.__name}",
                 "best_estimator": f"{self.__search.best_estimator_}",
                 "best_params": f"{self.__search.best_params_}",
             }
