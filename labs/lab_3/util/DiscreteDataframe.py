@@ -4,9 +4,9 @@ from labs.lab_3.util.SplitDataframe import SplitDataframe
 
 
 class DiscreteDataframe:
-    train: List[SplitDataframe]
-    test: List[SplitDataframe]
+    train_samples: List[SplitDataframe]
+    test_samples: List[SplitDataframe]
 
-    def __init__(self, train: List[SplitDataframe], test: List[SplitDataframe]):
-        self.train = train
-        self.test = test
+    def __init__(self, train_samples: List[SplitDataframe], test_samples: List[SplitDataframe]):
+        self.train_samples = train_samples
+        self.test_samples = test_samples
