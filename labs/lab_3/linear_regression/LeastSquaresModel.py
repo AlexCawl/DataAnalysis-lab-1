@@ -1,9 +1,9 @@
 from sklearn.linear_model import LinearRegression
 
-from labs.lab_3.linear_regression.LinearRegressionModel import LinearRegressionModel
+from labs.lab_3.util.data.BaseRegressionModel import BaseRegressionModel
 
 
-class LeastSquaresLinearRegressionModel(LinearRegressionModel):
+class LeastSquaresLinearRegressionModel(BaseRegressionModel):
     def __init__(self):
         super().__init__(
             params={

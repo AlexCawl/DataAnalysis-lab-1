@@ -12,7 +12,7 @@ from labs.util.plot.graphics import test_graphics_plot
 
 # Base class for Linear Regression Models
 # Can (and should) be reused in your models
-class LinearRegressionModel(RegressionModelApi):
+class BaseRegressionModel(RegressionModelApi):
     # Model state [Trained - True, otherwise - False]
     __state: bool
 
