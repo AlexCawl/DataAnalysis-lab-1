@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestRegressor
 from labs.lab_3.util.data.BaseRegressionModel import BaseRegressionModel
 
 
-class RFModel(BaseRegressionModel):
+class RandomForestRegressionModel(BaseRegressionModel):
     def __init__(self):
         super().__init__(
             params={
