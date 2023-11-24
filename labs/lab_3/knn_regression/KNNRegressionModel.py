@@ -68,8 +68,8 @@ class FullKNNRegressionModel(KNNRegressionModel):
         super().__init__(
             params = {
                 'algorithm': ['kd_tree'],  # Keeping fixed
-                'leaf_size': [10,15, 18, 20],
-                'n_neighbors': [6, 7],
+                'leaf_size': [15],
+                'n_neighbors': [6],
                 'p': [1],
                 'weights': ['distance']  # Keeping fixed
             },

@@ -1,9 +1,9 @@
 from sklearn.linear_model import Ridge
 
-from labs.lab_3.linear_regression.LinearRegressionModel import LinearRegressionModel
+from labs.lab_3.linear_regression.BaseRegressionModel import BaseRegressionModel
 
 
-class RidgeLinearRegressionModel(LinearRegressionModel):
+class RidgeLinearRegressionModel(BaseRegressionModel):
     def __init__(self):
         super().__init__(
             params={

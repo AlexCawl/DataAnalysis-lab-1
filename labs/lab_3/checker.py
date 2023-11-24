@@ -4,6 +4,7 @@ from typing import Dict, List, TextIO, Optional
 import pandas as pd
 
 from labs.lab_3.linear_regression import LINEAR_MODELS
+from labs.lab_3.knn_regression.KNNRegressionModel import FullKNNRegressionModel
 from labs.lab_3.util.AtomicDataframe import AtomicDataframe
 from labs.lab_3.util.DiscreteDataframe import DiscreteDataframe
 from labs.lab_3.util.RegressionModelApi import RegressionModelApi
@@ -91,6 +92,7 @@ def check_hypotheses(train_path: str, test_path: str, *, output_path: Optional[s
     # TODO place your models here
     models: List[RegressionModelApi] = list()
     models.extend(LINEAR_MODELS)
+    models.append(FullKNNRegressionModel())
 
     if mode == "atomic":
         dataframe: AtomicDataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
