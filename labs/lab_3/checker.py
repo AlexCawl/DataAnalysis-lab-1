@@ -6,6 +6,7 @@ import pandas as pd
 from labs.lab_3.gradient_boosting_regression.GradientBoostingRegressionModel import GradientBoostingRegressionModel
 from labs.lab_3.linear_regression import LINEAR_MODELS
 from labs.lab_3.knn_regression.KNNRegressionModel import FullKNNRegressionModel
+from labs.lab_3.neural_network_regression.NeuralNetworkRegresionModel import NeuralNetworkRegressionModel
 from labs.lab_3.util.data.AtomicDataframe import AtomicDataframe
 from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
 from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
@@ -95,6 +96,7 @@ def check_hypotheses(train_path: str, test_path: str, *, output_path: Optional[s
     models.extend(LINEAR_MODELS)
     models.append(FullKNNRegressionModel())
     models.append(GradientBoostingRegressionModel())
+    models.append(NeuralNetworkRegressionModel())
 
     if mode == "atomic":
         dataframe: AtomicDataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
