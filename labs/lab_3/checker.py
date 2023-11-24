@@ -97,8 +97,8 @@ def check_hypotheses(train_path: str, test_path: str, *, output_path: Optional[s
     models.extend(LINEAR_MODELS)
     models.append(FullKNNRegressionModel())
     models.append(GradientBoostingRegressionModel())
-    models.append(NeuralNetworkRegressionModel())
     models.append(KernelBasedRegressionModel())
+    models.append(NeuralNetworkRegressionModel())
 
     if mode == "atomic":
         dataframe: AtomicDataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
