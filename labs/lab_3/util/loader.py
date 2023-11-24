@@ -2,9 +2,9 @@ from typing import List
 
 import pandas as pd
 
-from labs.lab_3.util.AtomicDataframe import AtomicDataframe
-from labs.lab_3.util.DiscreteDataframe import DiscreteDataframe
-from labs.lab_3.util.SplitDataframe import SplitDataframe
+from labs.lab_3.util.data.AtomicDataframe import AtomicDataframe
+from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
+from labs.lab_3.util.data.SplitDataframe import SplitDataframe
 from labs.lab_3.util.constants import VARIABLE_NAMES
 from labs.util.file_processing.loader import load_from_csv
 

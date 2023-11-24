@@ -3,7 +3,7 @@ from typing import Tuple, Any, List
 import pandas as pd
 from sklearn.feature_selection import SelectKBest, f_regression
 
-from labs.lab_3.util.AtomicDataframe import AtomicDataframe
+from labs.lab_3.util.data.AtomicDataframe import AtomicDataframe
 
 
 # vanilla feature selection

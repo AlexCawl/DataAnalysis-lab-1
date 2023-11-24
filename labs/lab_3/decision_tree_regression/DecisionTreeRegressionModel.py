@@ -7,7 +7,7 @@ from sklearn import metrics
 from sklearn.model_selection import RepeatedStratifiedKFold, GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
 
-from labs.lab_3.util.RegressionModelApi import RegressionModelApi
+from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
 
 
 class DTRModel(RegressionModelApi):
