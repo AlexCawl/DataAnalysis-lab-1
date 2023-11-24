@@ -1,6 +1,6 @@
 from sklearn.linear_model import Ridge
 
-from labs.lab_3.linear_regression.BaseRegressionModel import BaseRegressionModel
+from labs.lab_3.util.data.BaseRegressionModel import BaseRegressionModel
 
 
 class RidgeLinearRegressionModel(BaseRegressionModel):
