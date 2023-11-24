@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -69,7 +69,7 @@ class LinearRegressionModel(RegressionModelApi):
         self.__search.fit(X=x_train, y=y_train)
 
     @measure_execution_time
-    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: str = "") -> None:
+    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: Optional[str] = None) -> None:
         if not self.__state:
             raise Exception("Model not trained!")
 
@@ -84,4 +84,5 @@ class LinearRegressionModel(RegressionModelApi):
         )
 
         # log graphics
-        test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-LRM")
+        if path is not None:
+            test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-LRM")
