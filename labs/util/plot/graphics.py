@@ -58,7 +58,7 @@ def test_graphics_plot(actual: pd.DataFrame, expected: pd.DataFrame, path: str, 
 
     # regression line plot
     figure, axis = plt.subplots()
-    axis.scatter(actual, actual - expected)
+    axis.scatter(actual, actual - expected.reshape(expected.shape[0], 1))
     axis.axhline(lw=2, color='black')
     axis.set_xlabel('Observed')
     axis.set_ylabel('Residual')
