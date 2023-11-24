@@ -5,7 +5,7 @@ import pandas as pd
 from sklearn import metrics
 from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 
-from labs.lab_3.util.RegressionModelApi import RegressionModelApi
+from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
 from labs.util.benchmarking.measuring import measure_execution_time
 from labs.util.plot.graphics import test_graphics_plot
 
