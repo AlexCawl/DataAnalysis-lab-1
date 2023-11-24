@@ -94,5 +94,5 @@ class BaseRegressionModel(RegressionModelApi):
         )
 
         # log graphics
-        if path is not None:
+        if path is not None and self.__graphics:
             test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-{self.__name}")
