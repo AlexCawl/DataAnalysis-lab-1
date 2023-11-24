@@ -15,9 +15,9 @@ class RFModel(BaseRegressionModel):
         super().__init__(
             params={
                 'n_estimators': [50],
-                'max_depth': [15, 20],
-                'min_samples_split': [55, 75],
-                'max_leaf_nodes': [85, 105]
+                'max_depth': [15],
+                'min_samples_split': [55],
+                'max_leaf_nodes': [105]
             },
             estimator=RandomForestRegressor(),
             name=f"{self.__class__.__name__}",
