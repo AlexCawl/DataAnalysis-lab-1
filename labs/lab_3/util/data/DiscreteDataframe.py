@@ -1,6 +1,6 @@
 from typing import List
 
-from labs.lab_3.util.SplitDataframe import SplitDataframe
+from labs.lab_3.util.data.SplitDataframe import SplitDataframe
 
 
 class DiscreteDataframe:

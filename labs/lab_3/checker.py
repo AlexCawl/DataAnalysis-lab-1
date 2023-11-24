@@ -5,9 +5,9 @@ import pandas as pd
 
 from labs.lab_3.linear_regression import LINEAR_MODELS
 from labs.lab_3.knn_regression.KNNRegressionModel import FullKNNRegressionModel
-from labs.lab_3.util.AtomicDataframe import AtomicDataframe
-from labs.lab_3.util.DiscreteDataframe import DiscreteDataframe
-from labs.lab_3.util.RegressionModelApi import RegressionModelApi
+from labs.lab_3.util.data.AtomicDataframe import AtomicDataframe
+from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
+from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
 from labs.lab_3.util.constants import TRAIN_FILES, TEST_FILES
 from labs.lab_3.util.loader import load_atomic_dataframe, load_discrete_dataframe
 from labs.util.benchmarking.measuring import measure_execution_time
