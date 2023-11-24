@@ -49,9 +49,9 @@ class DTRModel(BaseRegressionModel):
 
         super().__init__(
             params={'criterion': ['squared_error'],
-                             'max_depth': [10, 15],
-                             'max_leaf_nodes': [85, 95, 105],
-                             'min_samples_split': [65, 75, 85]},
+                             'max_depth': [10],
+                             'max_leaf_nodes': [105],
+                             'min_samples_split': [85]},
             estimator=DecisionTreeRegressor(),
             name=f"{self.__class__.__name__}",
             load_graphics=True
