@@ -3,8 +3,7 @@ from typing import Dict, List, TextIO
 
 import pandas as pd
 
-from labs.lab_3.linear_regression.LinearRegressionModel import LeastSquaresLinearRegressionModel, \
-    RidgeLinearRegressionModelModel
+from labs.lab_3.linear_regression import EXPORTED_MODELS
 from labs.lab_3.util.AtomicDataframe import AtomicDataframe
 from labs.lab_3.util.RegressionModelApi import RegressionModelApi
 from labs.lab_3.util.constants import TRAIN_FILES, TEST_FILES
@@ -43,7 +42,8 @@ def check_hypotheses(train_path: str, test_path: str, mode: str = "atomic"):
     file.write(f"LOG DATE: {datetime.datetime.now()}" + "\n")
     file.close()
     # TODO place your models here
-    models: List[RegressionModelApi] = [RidgeLinearRegressionModelModel()]
+    models: List[RegressionModelApi] = list()
+    models.extend(EXPORTED_MODELS)
 
     if mode == "atomic":
         atomic_dataframe: AtomicDataframe = load_atomic_dataframe(train_path, TRAIN_FILES, test_path, TEST_FILES)
