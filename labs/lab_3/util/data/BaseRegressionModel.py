@@ -13,6 +13,9 @@ from labs.util.plot.graphics import test_graphics_plot
 # Base class for Linear Regression Models
 # Can (and should) be reused in your models
 class BaseRegressionModel(RegressionModelApi):
+    # Model Name
+    __name: str
+
     # Model state [Trained - True, otherwise - False]
     __state: bool
 
@@ -28,7 +31,14 @@ class BaseRegressionModel(RegressionModelApi):
     # Overall report (used to describe model state after training & testing)
     __report: Dict[str, str]
 
-    def __init__(self, params: Dict[str, Any], estimator: Any):
+    # Load graphics
+    __graphics: bool
+
+    def __init__(self, params: Dict[str, Any], estimator: Any, name: str, load_graphics: bool = False):
+        # init name
+        self.__name = name
+        # init graphics logging
+        self.__graphics = load_graphics
         # init state
         self.__state = False
         # init params
@@ -84,5 +94,5 @@ class BaseRegressionModel(RegressionModelApi):
         )
 
         # log graphics
-        if path is not None:
-            test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-LRM")
+        if path is not None and self.__graphics:
+            test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-{self.__name}")

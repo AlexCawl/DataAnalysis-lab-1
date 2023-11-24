@@ -13,5 +13,7 @@ class FullKNNRegressionModel(BaseRegressionModel):
                 'p': [1],
                 'weights': ['distance']  # Keeping fixed
             },
-            estimator=KNeighborsRegressor()
+            estimator=KNeighborsRegressor(),
+            name=f"{self.__class__.__name__}",
+            load_graphics=True
         )

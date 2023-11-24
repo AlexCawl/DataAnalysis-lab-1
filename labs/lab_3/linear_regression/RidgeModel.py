@@ -12,5 +12,7 @@ class RidgeLinearRegressionModel(BaseRegressionModel):
                 'copy_X': [True],
                 'fit_intercept': [True]
             },
-            estimator=Ridge()
+            estimator=Ridge(),
+            name=f"{self.__class__.__name__}",
+            load_graphics=True
         )
