@@ -12,8 +12,8 @@ from sklearn.model_selection import cross_val_score
 training_files: list[str] = ['Features_Variant_1.csv', 'Features_Variant_2.csv', 'Features_Variant_3.csv',
                              'Features_Variant_4.csv', 'Features_Variant_5.csv']
 
-PATH_TRAIN: str = '../../../data-in/lab_3/Training/'
-PATH_TEST: str = '../../../data-in/lab_3/Testing/TestSet/'
+PATH_TRAIN: str = '../../../data-in/lab_3/Dataset/Training/'
+PATH_TEST: str = '../../../data-in/lab_3/Dataset/Testing/TestSet/'
 
 # Training sets
 combined_train: pd.DataFrame = pd.concat(

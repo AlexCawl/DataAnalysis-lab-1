@@ -22,7 +22,7 @@ def check_model(
         train_target: pd.DataFrame,
         test_dataframe: pd.DataFrame,
         test_target: pd.DataFrame,
-        log_path: str = ""
+        log_path: str = "data-out/lab3"
 ) -> None:
     model.train(x_train=train_dataframe, y_train=train_target)
     model.test(x_test=test_dataframe, y_test=test_target, path=log_path)
