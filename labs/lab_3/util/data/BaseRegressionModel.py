@@ -1,17 +1,21 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 from sklearn import metrics
-from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 
-from labs.lab_3.util.RegressionModelApi import RegressionModelApi
+from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
 from labs.util.benchmarking.measuring import measure_execution_time
+from labs.util.plot.graphics import test_graphics_plot
 
 
-class LinearRegressionModel(RegressionModelApi):
+# Base class for Linear Regression Models
+# Can (and should) be reused in your models
+class BaseRegressionModel(RegressionModelApi):
+    # Model Name
+    __name: str
+
     # Model state [Trained - True, otherwise - False]
     __state: bool
 
@@ -22,20 +26,29 @@ class LinearRegressionModel(RegressionModelApi):
     __search: GridSearchCV
 
     # Cross-Validation (same for all models)
-    __cv: Any = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
+    __cv: RepeatedStratifiedKFold = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
 
     # Overall report (used to describe model state after training & testing)
     __report: Dict[str, str]
 
-    def __init__(self):
+    # Load graphics
+    __graphics: bool
+
+    def __init__(self, params: Dict[str, Any], estimator: Any, name: str, load_graphics: bool = False):
+        # init name
+        self.__name = name
+        # init graphics logging
+        self.__graphics = load_graphics
         # init state
         self.__state = False
         # init params
-        self.__params = {'fit_intercept': [True, False], 'copy_X': [True, False]}
-        # init GridSearchCV based on cross-validator and params
-        self.__search = GridSearchCV(estimator=LinearRegression(), param_grid=self.__params, cv=self.__cv, n_jobs=-1)
+        self.__params = params
+        # init cross-validator
+        self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
         # init logs
         self.__report = dict()
+        # init search
+        self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1)
 
     def get_info(self) -> Dict[str, str]:
         # validation
@@ -51,7 +64,6 @@ class LinearRegressionModel(RegressionModelApi):
                 "model": "sklearn.linear_model.LinearRegression",
                 "best_estimator": f"{self.__search.best_estimator_}",
                 "best_params": f"{self.__search.best_params_}",
-                "R2 score": f"{self.__search.best_score_}"
             }
         )
 
@@ -60,14 +72,14 @@ class LinearRegressionModel(RegressionModelApi):
         return report
 
     @measure_execution_time
-    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame, path: str = "") -> None:
+    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame) -> None:
         # change state
         self.__state = True
         # train model
         self.__search.fit(X=x_train, y=y_train)
 
     @measure_execution_time
-    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: str = "") -> None:
+    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: Optional[str] = None) -> None:
         if not self.__state:
             raise Exception("Model not trained!")
 
@@ -76,23 +88,11 @@ class LinearRegressionModel(RegressionModelApi):
             {
                 "mean_absolute_error": f"{metrics.mean_absolute_error(y_test, prediction)}",
                 "mean_squared_error": f"{metrics.mean_squared_error(y_test, prediction)}",
-                "root_mean_squared_error": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}"
+                "root_mean_squared_error": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}",
+                "R2 score": f"{self.__search.best_estimator_.score(x_test, y_test)}"
             }
         )
 
-        # clear pyplot
-        plt.clf()
-
-        # confusion matrix plot
-        plt.scatter(y_test, prediction)
-        plt.savefig(f"{path}/{self.__class__.__name__}-LRM1.png")
-        plt.clf()
-
-        # regression line plot
-        figure, axis = plt.subplots()
-        axis.scatter(y_test, y_test - prediction)
-        axis.axhline(lw=2, color='black')
-        axis.set_xlabel('Observed')
-        axis.set_ylabel('Residual')
-        plt.savefig(f"{path}/{self.__class__.__name__}-LRM2.png")
-        plt.clf()
+        # log graphics
+        if path is not None and self.__graphics:
+            test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-{self.__name}")

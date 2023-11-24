@@ -36,12 +36,12 @@ def check_model(model: Callable[[], Any], dataframe: pd.DataFrame, output_path: 
 
     x_train, x_test, y_train, y_test = split_dataframe_into_samples(dataframe, RESULT)
     model = model()
-    model.train(x_train, y_train)
+    model.train_samples(x_train, y_train)
 
     if balance is not None:
-        model.test(x_test, y_test, output_path, balance)
+        model.test_samples(x_test, y_test, output_path, balance)
     else:
-        model.test(x_test, y_test, output_path)
+        model.test_samples(x_test, y_test, output_path)
 
     print(model.get_info())
 

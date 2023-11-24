@@ -2,9 +2,9 @@ from typing import List
 
 import pandas as pd
 
-from labs.lab_3.util.AtomicDataframe import AtomicDataframe
-from labs.lab_3.util.DiscreteDataframe import DiscreteDataframe
-from labs.lab_3.util.SplitDataframe import SplitDataframe
+from labs.lab_3.util.data.AtomicDataframe import AtomicDataframe
+from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
+from labs.lab_3.util.data.SplitDataframe import SplitDataframe
 from labs.lab_3.util.constants import VARIABLE_NAMES
 from labs.util.file_processing.loader import load_from_csv
 
@@ -23,9 +23,13 @@ def load_atomic_dataframe(
             dataframes.append(dataframe)
         return dataframes
 
+    # loading raw dataframes
     train_dataframes: List[pd.DataFrame] = load(path_train_dataframes, train_dataframes_names)
     test_dataframes: List[pd.DataFrame] = load(path_test_dataframes, test_dataframes_names)
+
+    # concatenating dataframes
     train_atomic_dataframe: pd.DataFrame = pd.concat(train_dataframes, ignore_index=True)
+    train_atomic_dataframe.drop_duplicates(inplace=True)
     test_atomic_dataframe: pd.DataFrame = pd.concat(test_dataframes, ignore_index=True)
 
     return AtomicDataframe(
@@ -37,10 +41,10 @@ def load_atomic_dataframe(
 
 
 def load_discrete_dataframe(
-        path_train_dataframes: str,
-        train_dataframes_names: List[str],
-        path_test_dataframes: str,
-        test_dataframes_names: List[str]
+        train_path: str,
+        train_files: List[str],
+        test_path: str,
+        test_files: List[str]
 ) -> DiscreteDataframe:
     def load(path: str, names: List[str], target: List[str]) -> List[SplitDataframe]:
         raw_dataframes: List[pd.DataFrame] = []
@@ -50,6 +54,6 @@ def load_discrete_dataframe(
             raw_dataframes.append(dataframe)
         return [SplitDataframe(df, target) for df in raw_dataframes]
 
-    train_dataframes: List[SplitDataframe] = load(path_train_dataframes, train_dataframes_names, ["Target Variable"])
-    test_dataframes: List[SplitDataframe] = load(path_test_dataframes, test_dataframes_names, ["Target Variable"])
-    return DiscreteDataframe(train=train_dataframes, test=test_dataframes)
+    train_samples: List[SplitDataframe] = load(train_path, train_files, ["Target Variable"])
+    test_samples: List[SplitDataframe] = load(test_path, test_files, ["Target Variable"])
+    return DiscreteDataframe(train_samples=train_samples, test_samples=test_samples)

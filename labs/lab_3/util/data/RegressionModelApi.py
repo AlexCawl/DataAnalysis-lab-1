@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Dict
+from typing import Dict, Optional
 
 import pandas as pd
 
@@ -10,9 +10,9 @@ class RegressionModelApi:
         ...
 
     @abstractmethod
-    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame, path: str = "") -> None:
+    def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame) -> None:
         ...
 
     @abstractmethod
-    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: str = "") -> None:
+    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: Optional[str] = None) -> None:
         ...
