@@ -3,7 +3,6 @@ from typing import Any, Dict
 import numpy as np
 import pandas as pd
 from sklearn import metrics
-from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 
 from labs.lab_3.util.RegressionModelApi import RegressionModelApi
@@ -55,7 +54,6 @@ class LinearRegressionModel(RegressionModelApi):
                 "model": "sklearn.linear_model.LinearRegression",
                 "best_estimator": f"{self.__search.best_estimator_}",
                 "best_params": f"{self.__search.best_params_}",
-                "R2 score": f"{self.__search.best_score_}"
             }
         )
 
@@ -80,36 +78,10 @@ class LinearRegressionModel(RegressionModelApi):
             {
                 "mean_absolute_error": f"{metrics.mean_absolute_error(y_test, prediction)}",
                 "mean_squared_error": f"{metrics.mean_squared_error(y_test, prediction)}",
-                "root_mean_squared_error": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}"
+                "root_mean_squared_error": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}",
+                "R2 score": f"{self.__search.best_estimator_.score(x_test, y_test)}"
             }
         )
 
         # log graphics
         test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-LRM")
-
-
-class LeastSquaresLinearRegressionModel(LinearRegressionModel):
-    def __init__(self):
-        super().__init__(
-            params={
-                'fit_intercept': [True, False],
-                'copy_X': [True, False]
-            },
-            estimator=LinearRegression()
-        )
-
-
-class RidgeLinearRegressionModelModel(LinearRegressionModel):
-    def __init__(self):
-        super().__init__(
-            params={
-                'alpha': [1.0, 5.0, 25.0],
-                'solver': ['svd', 'cholesky', 'sparse_cg', 'saga']
-            },
-            estimator=Ridge()
-        )
-# Lasso
-# The Lasso is a linear model that estimates sparse coefficients with l1 regularization.
-
-# ElasticNet
-# Elastic-Net is a linear regression model trained with both l1 and l2 -norm regularization of the coefficients.

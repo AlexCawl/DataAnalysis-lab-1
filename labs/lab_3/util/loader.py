@@ -29,6 +29,7 @@ def load_atomic_dataframe(
 
     # concatenating dataframes
     train_atomic_dataframe: pd.DataFrame = pd.concat(train_dataframes, ignore_index=True)
+    train_atomic_dataframe.drop_duplicates(inplace=True)
     test_atomic_dataframe: pd.DataFrame = pd.concat(test_dataframes, ignore_index=True)
 
     return AtomicDataframe(
