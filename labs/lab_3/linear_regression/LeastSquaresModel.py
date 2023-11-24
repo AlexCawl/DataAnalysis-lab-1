@@ -10,5 +10,7 @@ class LeastSquaresLinearRegressionModel(BaseRegressionModel):
                 'fit_intercept': [False],
                 'copy_X': [True]
             },
-            estimator=LinearRegression()
+            estimator=LinearRegression(),
+            name=f"{self.__class__.__name__}",
+            load_graphics=True
         )
