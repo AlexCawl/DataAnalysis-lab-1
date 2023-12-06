@@ -13,5 +13,6 @@ class GradientBoostingRegressionModel(BaseRegressionModel):
                 'random_state': [42]
             },
             estimator=GradientBoostingRegressor(),
-            name=f"{self.__class__.__name__}"
+            name=f"{self.__class__.__name__}",
+            load_graphics=True
         )
