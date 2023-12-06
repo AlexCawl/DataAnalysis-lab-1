@@ -3,7 +3,7 @@ from sklearn.tree import DecisionTreeRegressor
 from labs.lab_3.util.data.BaseRegressionModel import BaseRegressionModel
 
 
-class DTRModel(BaseRegressionModel):
+class DecisionTreeRegressionModel(BaseRegressionModel):
     def __init__(self):
         super().__init__(
             params={

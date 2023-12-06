@@ -13,4 +13,4 @@ def main() -> None:
     train_path: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/lab_3/{TRAIN_DATASET_FOLDER}"
     test_path: str = f"{mk_dir_abs_from_local(DATA_INPUT_FOLDER)}/lab_3/{TEST_DATASET_FOLDER}"
     output_path = mk_dir_abs_from_local(f"{DATA_OUTPUT_FOLDER}/lab3")
-    check_hypotheses(train_path, test_path, output_path=output_path, mode="discrete")
+    check_hypotheses(train_path, test_path, output_path=output_path)

@@ -14,5 +14,5 @@ class RegressionModelApi:
         ...
 
     @abstractmethod
-    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: Optional[str] = None) -> None:
+    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, output_path: Optional[str] = None) -> None:
         ...
