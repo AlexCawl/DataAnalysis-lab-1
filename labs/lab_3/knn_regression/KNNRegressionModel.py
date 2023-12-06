@@ -3,7 +3,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from labs.lab_3.util.data.BaseRegressionModel import BaseRegressionModel
 
 
-class FullKNNRegressionModel(BaseRegressionModel):
+class KNNRegressionModel(BaseRegressionModel):
     def __init__(self):
         super().__init__(
             params={

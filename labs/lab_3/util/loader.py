@@ -1,59 +1,31 @@
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 
-from labs.lab_3.util.data.AtomicDataframe import AtomicDataframe
-from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
-from labs.lab_3.util.data.SplitDataframe import SplitDataframe
-from labs.lab_3.util.constants import VARIABLE_NAMES
+from labs.lab_3.util.constants import VARIABLE_NAMES, TRAIN_FILES, TEST_FILES
 from labs.util.file_processing.loader import load_from_csv
 
 
-def load_atomic_dataframe(
-        path_train_dataframes: str,
-        train_dataframes_names: List[str],
-        path_test_dataframes: str,
-        test_dataframes_names: List[str]
-) -> AtomicDataframe:
-    def load(path: str, names: List[str]) -> List[pd.DataFrame]:
-        dataframes: List[pd.DataFrame] = []
-        for name in names:
-            dataframe: pd.DataFrame = load_from_csv(path=f"{path}/{name}", delimiter=',')
-            dataframe.columns = VARIABLE_NAMES
-            dataframes.append(dataframe)
-        return dataframes
-
-    # loading raw dataframes
-    train_dataframes: List[pd.DataFrame] = load(path_train_dataframes, train_dataframes_names)
-    test_dataframes: List[pd.DataFrame] = load(path_test_dataframes, test_dataframes_names)
-
-    # concatenating dataframes
-    train_atomic_dataframe: pd.DataFrame = pd.concat(train_dataframes, ignore_index=True)
-    train_atomic_dataframe.drop_duplicates(inplace=True)
-    test_atomic_dataframe: pd.DataFrame = pd.concat(test_dataframes, ignore_index=True)
-
-    return AtomicDataframe(
-        train=train_atomic_dataframe.drop(columns=["Target Variable"], inplace=False),
-        train_target=train_atomic_dataframe[["Target Variable"]],
-        test=test_atomic_dataframe.drop(columns=["Target Variable"], inplace=False),
-        test_target=test_atomic_dataframe[["Target Variable"]]
-    )
+def load_from_multiple_sources(dir_name: str, file_names: List[str]) -> List[pd.DataFrame]:
+    dataframes: List[pd.DataFrame] = []
+    for file_name in file_names:
+        dataframe: pd.DataFrame = load_from_csv(path=f"{dir_name}/{file_name}", delimiter=',')
+        dataframe.columns = VARIABLE_NAMES
+        dataframes.append(dataframe)
+    return dataframes
 
 
-def load_discrete_dataframe(
-        train_path: str,
-        train_files: List[str],
-        test_path: str,
-        test_files: List[str]
-) -> DiscreteDataframe:
-    def load(path: str, names: List[str], target: List[str]) -> List[SplitDataframe]:
-        raw_dataframes: List[pd.DataFrame] = []
-        for name in names:
-            dataframe: pd.DataFrame = load_from_csv(path=f"{path}/{name}", delimiter=',')
-            dataframe.columns = VARIABLE_NAMES
-            raw_dataframes.append(dataframe)
-        return [SplitDataframe(df, target) for df in raw_dataframes]
+def load_from_multiple_sources_merged(dir_name: str, file_names: List[str]) -> pd.DataFrame:
+    dataframes: List[pd.DataFrame] = load_from_multiple_sources(dir_name, file_names)
+    return pd.concat(dataframes, ignore_index=True)
 
-    train_samples: List[SplitDataframe] = load(train_path, train_files, ["Target Variable"])
-    test_samples: List[SplitDataframe] = load(test_path, test_files, ["Target Variable"])
-    return DiscreteDataframe(train_samples=train_samples, test_samples=test_samples)
+
+def load_entire_data_and_split(*, train_path: str, test_path: str, fraction: float) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_base = load_from_multiple_sources_merged(train_path, TRAIN_FILES)
+    test_base = load_from_multiple_sources_merged(test_path, TEST_FILES)
+    all_data = pd.concat([train_base, test_base], ignore_index=True)
+    all_data.drop_duplicates(inplace=True)
+    all_data.drop(all_data[all_data['H Local'] == 0].index, inplace=True)
+    train = all_data.sample(frac=fraction, random_state=42)
+    test = all_data.drop(train.index)
+    return train, test

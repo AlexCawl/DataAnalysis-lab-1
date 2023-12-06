@@ -36,7 +36,7 @@ def check_model(model: Callable[[], Any], dataframe: pd.DataFrame, output_path: 
 
     x_train, x_test, y_train, y_test = split_dataframe_into_samples(dataframe, RESULT)
     model = model()
-    model.train_samples(x_train, y_train)
+    model.hashMap(x_train, y_train)
 
     if balance is not None:
         model.test_samples(x_test, y_test, output_path, balance)

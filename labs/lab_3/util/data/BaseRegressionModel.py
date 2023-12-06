@@ -61,9 +61,7 @@ class BaseRegressionModel(RegressionModelApi):
         # model params
         report.update(
             {
-                "model": f"{self.__name}",
-                "best_estimator": f"{self.__search.best_estimator_}",
-                "best_params": f"{self.__search.best_params_}",
+                "params": f"{self.__search.best_params_}",
             }
         )
 
@@ -79,20 +77,20 @@ class BaseRegressionModel(RegressionModelApi):
         self.__search.fit(X=x_train, y=y_train)
 
     @measure_execution_time
-    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, path: Optional[str] = None) -> None:
+    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, output_path: Optional[str] = None) -> None:
         if not self.__state:
             raise Exception("Model not trained!")
 
         prediction = self.__search.best_estimator_.predict(x_test)
         self.__report.update(
             {
-                "mean_absolute_error": f"{metrics.mean_absolute_error(y_test, prediction)}",
-                "mean_squared_error": f"{metrics.mean_squared_error(y_test, prediction)}",
-                "root_mean_squared_error": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}",
-                "R2 score": f"{self.__search.best_estimator_.score(x_test, y_test)}"
+                "MAE": f"{metrics.mean_absolute_error(y_test, prediction)}",
+                "MSE": f"{metrics.mean_squared_error(y_test, prediction)}",
+                "RMSE": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}",
+                "R2": f"{metrics.r2_score(y_test, prediction)}",
             }
         )
 
         # log graphics
-        if path is not None and self.__graphics:
-            test_graphics_plot(y_test, prediction, path, f"{self.__class__.__name__}-{self.__name}")
+        if output_path is not None and self.__graphics:
+            test_graphics_plot(y_test, prediction, output_path, f"{self.__class__.__name__}-{self.__name}")

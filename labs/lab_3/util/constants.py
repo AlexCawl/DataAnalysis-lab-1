@@ -28,3 +28,6 @@ VARIABLE_NAMES: List[str] = [
     "Base DateTime weekday - 1", "Base DateTime weekday - 2", "Base DateTime weekday - 3", "Base DateTime weekday - 4",
     "Base DateTime weekday - 5", "Base DateTime weekday - 6", "Target Variable"
 ]
+
+TARGET_VARIABLE: str = "Target Variable"
+SELECTED_VARIABLE: str = "H Local"
