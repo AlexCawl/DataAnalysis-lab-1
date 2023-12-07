@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import pandas as pd
 
@@ -20,12 +20,14 @@ def load_from_multiple_sources_merged(dir_name: str, file_names: List[str]) -> p
     return pd.concat(dataframes, ignore_index=True)
 
 
-def load_entire_data_and_split(*, train_path: str, test_path: str, fraction: float) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_entire_data_and_split(*, train_path: str, test_path: str, fraction: float, max_size: Optional[int]) -> Tuple[pd.DataFrame, pd.DataFrame]:
     train_base = load_from_multiple_sources_merged(train_path, TRAIN_FILES)
     test_base = load_from_multiple_sources_merged(test_path, TEST_FILES)
     all_data = pd.concat([train_base, test_base], ignore_index=True)
     all_data.drop_duplicates(inplace=True)
     all_data.drop(all_data[all_data['H Local'] == 0].index, inplace=True)
+    if max_size is not None:
+        all_data.drop(all_data[all_data.index > max_size].index, inplace=True)
     train = all_data.sample(frac=fraction, random_state=42)
     test = all_data.drop(train.index)
     return train, test

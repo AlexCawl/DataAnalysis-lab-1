@@ -94,17 +94,17 @@ def check_hypotheses(train_path: str, test_path: str, *, output_path: Optional[s
     init_log(log_path)
 
     # init data
-    train, test = load_entire_data_and_split(train_path=train_path, test_path=test_path, fraction=0.75)
+    train, test = load_entire_data_and_split(train_path=train_path, test_path=test_path, fraction=0.75, max_size=200000)
 
     # init models
     factories: List[Callable[[], RegressionModelApi]] = list()
-    factories.append(LeastSquaresLinearRegressionModelFactory)
-    factories.append(RidgeLinearRegressionModelFactory)
-    factories.append(NeuralNetworkRegressionModelFactory)
-    factories.append(RandomForestRegressionModelFactory)
-    factories.append(DecisionTreeRegressionModelFactory)
+    # factories.append(LeastSquaresLinearRegressionModelFactory)
+    # factories.append(RidgeLinearRegressionModelFactory)
+    # factories.append(NeuralNetworkRegressionModelFactory)
+    # factories.append(RandomForestRegressionModelFactory)
+    # factories.append(DecisionTreeRegressionModelFactory)
     factories.append(GradientBoostingRegressionModelFactory)
-    factories.append(KNNRegressionModelFactory)
+    # factories.append(KNNRegressionModelFactory)
 
     for factory in factories:
         check_model(factory, train, test, output_path=output_path, log_path=log_path)
