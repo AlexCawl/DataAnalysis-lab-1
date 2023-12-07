@@ -26,7 +26,7 @@ class BaseRegressionModel(RegressionModelApi):
     __search: GridSearchCV
 
     # Cross-Validation (same for all models)
-    __cv: RepeatedStratifiedKFold = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
+    __cv: RepeatedStratifiedKFold = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=36851234)
 
     # Overall report (used to describe model state after training & testing)
     __report: Dict[str, str]
@@ -44,11 +44,11 @@ class BaseRegressionModel(RegressionModelApi):
         # init params
         self.__params = params
         # init cross-validator
-        self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=3, random_state=36851234)
+        self.__cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=36851234)
         # init logs
         self.__report = dict()
         # init search
-        self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1)
+        self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1, verbose=10)
 
     def get_info(self) -> Dict[str, str]:
         # validation
