@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -7,7 +7,6 @@ from sklearn.model_selection import GridSearchCV, RepeatedStratifiedKFold
 
 from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
 from labs.util.benchmarking.measuring import measure_execution_time
-from labs.util.plot.graphics import test_graphics_plot
 
 
 # Base class for Linear Regression Models
@@ -48,7 +47,7 @@ class BaseRegressionModel(RegressionModelApi):
         # init logs
         self.__report = dict()
         # init search
-        self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1, verbose=10)
+        self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1)
 
     def get_info(self) -> Dict[str, str]:
         # validation
@@ -75,9 +74,14 @@ class BaseRegressionModel(RegressionModelApi):
         self.__state = True
         # train model
         self.__search.fit(X=x_train, y=y_train)
+        self.__report.update(
+            {
+                "TRAIN_R2": f"{self.__search.best_score_}",
+            }
+        )
 
     @measure_execution_time
-    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, output_path: Optional[str] = None) -> None:
+    def test(self, *, x_test: pd.DataFrame, y_test: pd.DataFrame, output_path: Optional[str] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
         if not self.__state:
             raise Exception("Model not trained!")
 
@@ -87,10 +91,7 @@ class BaseRegressionModel(RegressionModelApi):
                 "MAE": f"{metrics.mean_absolute_error(y_test, prediction)}",
                 "MSE": f"{metrics.mean_squared_error(y_test, prediction)}",
                 "RMSE": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}",
-                "R2": f"{metrics.r2_score(y_test, prediction)}",
+                "TEST_R2": f"{metrics.r2_score(y_test, prediction)}",
             }
         )
-
-        # log graphics
-        if output_path is not None and self.__graphics:
-            test_graphics_plot(y_test, prediction, output_path, f"{self.__class__.__name__}-{self.__name}")
+        return y_test, prediction
