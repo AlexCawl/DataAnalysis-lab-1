@@ -2,6 +2,7 @@ from typing import List, Optional, Callable
 
 import pandas as pd
 
+from labs.lab_3.cat_boost_regression import CatBoostRegressionModelFactory
 from labs.lab_3.decision_tree_regression import DecisionTreeRegressionModelFactory
 from labs.lab_3.gradient_boosting_regression import GradientBoostingRegressionModelFactory
 from labs.lab_3.knn_regression import KNNRegressionModelFactory
@@ -47,6 +48,7 @@ def check_hypotheses(train_path: str, test_path: str, *, output_path: Optional[s
 
     # init models
     factories: List[Callable[[], RegressionModelApi]] = list()
+    factories.append(CatBoostRegressionModelFactory)
     factories.append(LeastSquaresLinearRegressionModelFactory)
     factories.append(RidgeLinearRegressionModelFactory)
     factories.append(NeuralNetworkRegressionModelFactory)
