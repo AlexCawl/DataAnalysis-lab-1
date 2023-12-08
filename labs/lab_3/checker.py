@@ -14,10 +14,6 @@ from labs.lab_3.util.data.RegressionSelectorHolder import RegressionSelectorHold
 from labs.lab_3.util.loader import load_entire_data_and_split
 from labs.util.benchmarking.measuring import measure_execution_time
 from labs.util.logger.logger import write_raw_to_log, write_json_to_log, access_log, init_log
-from sklearn.preprocessing import StandardScaler
-from sklearn.neural_network import MLPRegressor
-
-
 
 
 @measure_execution_time
@@ -51,13 +47,13 @@ def check_hypotheses(train_path: str, test_path: str, *, output_path: Optional[s
 
 # init models
     factories: List[Callable[[], RegressionModelApi]] = list()
-    # factories.append(LeastSquaresLinearRegressionModelFactory)
-    # factories.append(RidgeLinearRegressionModelFactory)
     factories.append(NeuralNetworkRegressionModelFactory)
-    # factories.append(RandomForestRegressionModelFactory)
-    # factories.append(DecisionTreeRegressionModelFactory)
-    # factories.append(GradientBoostingRegressionModelFactory)
-    # factories.append(KNNRegressionModelFactory)
+    factories.append(LeastSquaresLinearRegressionModelFactory)
+    factories.append(RidgeLinearRegressionModelFactory)
+    factories.append(RandomForestRegressionModelFactory)
+    factories.append(DecisionTreeRegressionModelFactory)
+    factories.append(GradientBoostingRegressionModelFactory)
+    factories.append(KNNRegressionModelFactory)
 
     for factory in factories:
         check_model(factory, train, test, output_path=output_path, log_path=log_path)
