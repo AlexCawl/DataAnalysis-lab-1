@@ -28,7 +28,7 @@ class BaseRegressionModel(RegressionModelApi):
     __cv: RepeatedStratifiedKFold = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=36851234)
 
     # Overall report (used to describe model state after training & testing)
-    __report: Dict[str, str]
+    __report: Dict[str, Any]
 
     # Load graphics
     __graphics: bool
@@ -49,7 +49,7 @@ class BaseRegressionModel(RegressionModelApi):
         # init search
         self.__search = GridSearchCV(estimator=estimator, param_grid=self.__params, cv=self.__cv, n_jobs=-1)
 
-    def get_info(self) -> Dict[str, str]:
+    def get_info(self) -> Dict[str, Any]:
         # validation
         if not self.__state:
             raise Exception("Model not trained!")
@@ -60,7 +60,7 @@ class BaseRegressionModel(RegressionModelApi):
         # model params
         report.update(
             {
-                "params": f"{self.__search.best_params_}",
+                "params": self.__search.best_params_
             }
         )
 
@@ -74,9 +74,10 @@ class BaseRegressionModel(RegressionModelApi):
         self.__state = True
         # train model
         self.__search.fit(X=x_train, y=y_train)
+        r2: float = self.__search.score(X=x_train, y=y_train)
         self.__report.update(
             {
-                "TRAIN_R2": f"{self.__search.best_score_}",
+                "TRAIN_R2": r2
             }
         )
 
@@ -86,12 +87,13 @@ class BaseRegressionModel(RegressionModelApi):
             raise Exception("Model not trained!")
 
         prediction = self.__search.best_estimator_.predict(x_test)
+        r2 = metrics.r2_score(y_test, prediction)
         self.__report.update(
             {
-                "MAE": f"{metrics.mean_absolute_error(y_test, prediction)}",
-                "MSE": f"{metrics.mean_squared_error(y_test, prediction)}",
-                "RMSE": f"{np.sqrt(metrics.mean_squared_error(y_test, prediction))}",
-                "TEST_R2": f"{metrics.r2_score(y_test, prediction)}",
+                "MAE": metrics.mean_absolute_error(y_test, prediction),
+                "MSE": metrics.mean_squared_error(y_test, prediction),
+                "RMSE": np.sqrt(metrics.mean_squared_error(y_test, prediction)),
+                "TEST_R2": r2
             }
         )
         return y_test, prediction

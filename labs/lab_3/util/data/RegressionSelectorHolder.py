@@ -6,7 +6,7 @@ from labs.lab_3.util.data.AxialDataframe import AxialDataframe
 from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
 from labs.lab_3.util.data.RegressionModelApi import RegressionModelApi
 from labs.util.logger.logger import write_raw_to_log, write_json_to_log
-from labs.util.plot.graphics import test_sample_regression_plot, test_analytics_plot
+from labs.util.plot.graphics import test_sample_regression_plot, test_analytics_plot, test_score_plot
 
 
 class RegressionSelectorHolder:
@@ -47,10 +47,11 @@ class RegressionSelectorHolder:
             if log_path is not None:
                 write_raw_to_log(f"key: {key}", log_path=log_path)
                 write_json_to_log(self.discrete_solvers[key].get_info(), log_path=log_path)
+                write_raw_to_log(f"", log_path=log_path)
 
     def test(self, *, output_path: Optional[str] = None, print_all_graphics: bool = False) -> None:
         analytics: pd.DataFrame = pd.DataFrame(columns=['Actual', 'Expected', 'hours'])
-        values: pd.DataFrame = pd.DataFrame(columns=['hours', 'MAE', 'MSE', 'RMSE', 'R2'])
+        values: pd.DataFrame = pd.DataFrame(columns=['hours', 'MAE', 'MSE', 'RMSE', 'R2', 'type'], dtype=float)
         for key in self.discrete_solvers:
             data: AxialDataframe = self.testing[key]
             actual, expected = self.discrete_solvers[key].test(x_test=data.x, y_test=data.y, output_path=output_path)
@@ -62,14 +63,23 @@ class RegressionSelectorHolder:
             analytics = pd.concat([analytics, cur_analytics], axis=0)
             # update values
             cur_values = self.discrete_solvers[key].get_info()
-            # TODO update values
+            cur_values.update({'hours': f"{key}"})
+            train_r2 = cur_values.pop('TRAIN_R2')
+            test_r2 = cur_values.pop('TEST_R2')
+            rowTrain = cur_values.copy()
+            rowTrain.update({'R2': train_r2, 'type': 'train'})  # not sorry
+            values.loc[len(values)] = pd.Series(rowTrain)
+            rowTest = cur_values.copy()
+            rowTest.update({'R2': test_r2, 'type': 'test'})  # not sorry
+            values.loc[len(values)] = pd.Series(rowTest)
             if output_path is not None and (print_all_graphics or key == 24):
                 test_sample_regression_plot(
-                    actual, expected, output_path, f"{self.discrete_solvers[key].__class__.__name__}-{key}h"
+                    actual, expected, output_path,
+                    f"{self.discrete_solvers[key].__class__.__name__}-{key}h"
                 )
         if output_path is not None:
             test_analytics_plot(analytics, output_path, f"{self.model_factory().__class__.__name__}")
-            # TODO update values graphic
+            test_score_plot(values, output_path, f"{self.model_factory().__class__.__name__}")
 
     def __iter__(self) -> Iterator[int]:
         return self.discrete_solvers.__iter__()
