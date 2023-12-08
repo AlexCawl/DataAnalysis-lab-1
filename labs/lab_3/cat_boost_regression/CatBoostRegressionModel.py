@@ -36,8 +36,8 @@ class CatBoostRegressionModel(RegressionModelApi):
         # setup estimator
         self.__estimator = CatBoostRegressor(iterations=1000, learning_rate=0.1, depth=10, verbose=100)
 
-    def get_info(self) -> Dict[str, str]:
-        return self.__report
+    def get_info(self) -> Dict[str, Any]:
+        return self.__report.copy()
 
     @measure_execution_time
     def train(self, *, x_train: pd.DataFrame, y_train: pd.DataFrame) -> None:
