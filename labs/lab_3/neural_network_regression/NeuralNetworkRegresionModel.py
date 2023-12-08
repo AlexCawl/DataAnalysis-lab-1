@@ -9,7 +9,7 @@ class NeuralNetworkRegressionModel(BaseRegressionModel):
             params={
                 'alpha': [1e-4],
                 'hidden_layer_sizes': [(150, 5,)],
-                'random_state': [12],
+                'random_state': [42],
                 'max_iter': [500],
                 'activation': ['relu'],
                 'early_stopping': [True],

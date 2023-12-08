@@ -20,7 +20,7 @@ def load_from_multiple_sources_merged(dir_name: str, file_names: List[str]) -> p
     return pd.concat(dataframes, ignore_index=True)
 
 
-def load_entire_data_and_split(*, train_path: str, test_path: str, fraction: float, max_size: Optional[int]) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def load_entire_data_and_split(*, train_path: str, test_path: str, fraction: float, max_size: Optional[int] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
     train_base = load_from_multiple_sources_merged(train_path, TRAIN_FILES)
     test_base = load_from_multiple_sources_merged(test_path, TEST_FILES)
     all_data = pd.concat([train_base, test_base], ignore_index=True)
