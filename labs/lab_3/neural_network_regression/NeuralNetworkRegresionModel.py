@@ -8,13 +8,13 @@ class NeuralNetworkRegressionModel(BaseRegressionModel):
         super().__init__(
             params={
                 'alpha': [1e-4],
-                'hidden_layer_sizes': [(250, 5,), (250, 25,), (250, 50,)],
+                'hidden_layer_sizes': [(250, 50,)],
                 'random_state': [42],
-                'max_iter': [5000],
+                'max_iter': [2500],
                 'solver': ['sgd', 'adam'],
                 'activation': ['relu'],
                 'early_stopping': [True],
-                'learning_rate_init': [0.001, 0.0001],
+                'learning_rate_init': [0.001],
                 'learning_rate': ['adaptive']
             },
             estimator=MLPRegressor(),
