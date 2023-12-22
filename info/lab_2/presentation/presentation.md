@@ -261,6 +261,18 @@ marp: true
 - так вышло 😁😁😁
 
 ---
+
+# Список Литературы
+
+* Документации **Sklearn, Pandas, Numpy** 
+
+* Статьи с **habr.com**, **Tproger.com**
+
+* **UCI Machine Learning Repository** 
+
+* Лекции с курса **"Приложения и практика анализа данных"**
+
+---
 ![bg right width:480px height:480px](https://gifdb.com/images/high/cat-dancing-jamming-music-head-bang-brhezf4tbvjmxv2b.gif)
 
 # Старались,
