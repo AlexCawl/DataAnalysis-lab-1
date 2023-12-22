@@ -77,7 +77,7 @@ class BaseRegressionModel(RegressionModelApi):
         r2: float = self.__search.score(X=x_train, y=y_train)
         self.__report.update(
             {
-                "TRAIN_R2": r2
+                "TRAIN_R2": r2 if r2 >= -1 else -1
             }
         )
 
@@ -93,7 +93,7 @@ class BaseRegressionModel(RegressionModelApi):
                 "MAE": metrics.mean_absolute_error(y_test, prediction),
                 "MSE": metrics.mean_squared_error(y_test, prediction),
                 "RMSE": np.sqrt(metrics.mean_squared_error(y_test, prediction)),
-                "TEST_R2": r2
+                "TEST_R2": r2 if r2 >= -1 else -1
             }
         )
         return y_test, prediction

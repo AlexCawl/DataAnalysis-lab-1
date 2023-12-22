@@ -1,6 +1,7 @@
 from typing import Dict, Optional, Callable, Iterator
 
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 from labs.lab_3.util.data.AxialDataframe import AxialDataframe
 from labs.lab_3.util.data.DiscreteDataframe import DiscreteDataframe
@@ -35,6 +36,8 @@ class RegressionSelectorHolder:
         # init current RegressionModelApi solver
         self.model_factory = model_factory
         # fill discrete solvers
+        self.scaler = StandardScaler()
+
         for key in self.training:
             self.discrete_solvers[key] = self.model_factory()
 
@@ -43,6 +46,10 @@ class RegressionSelectorHolder:
             write_raw_to_log(f"", log_path=log_path)
         for key in self.discrete_solvers:
             data: AxialDataframe = self.training[key]
+
+            self.scaler.fit(data.x)
+            data.x = self.scaler.transform(data.x)
+
             self.discrete_solvers[key].train(x_train=data.x, y_train=data.y)
             if log_path is not None:
                 write_raw_to_log(f"key: {key}", log_path=log_path)
@@ -54,6 +61,9 @@ class RegressionSelectorHolder:
         values: pd.DataFrame = pd.DataFrame(columns=['hours', 'MAE', 'MSE', 'RMSE', 'R2', 'type'], dtype=float)
         for key in self.discrete_solvers:
             data: AxialDataframe = self.testing[key]
+
+            data.x = self.scaler.transform(data.x)
+
             actual, expected = self.discrete_solvers[key].test(x_test=data.x, y_test=data.y, output_path=output_path)
             # update analytics
             cur_analytics: pd.DataFrame = pd.DataFrame()
